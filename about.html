@@ -40,23 +40,8 @@
       text-align: left;
     }
   </style>
-  <style>
-    #vein-bg {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-    #vein-bg line { stroke: rgba(107,97,88,0.13); stroke-width: 0.6; }
-
-    nav, .page { position: relative; z-index: 1; }
-  </style>
 </head>
 <body>
-
-  <svg id="vein-bg"></svg>
 
   <nav id="site-nav">
     <a href="index.html">listki</a>
@@ -87,56 +72,6 @@
     </div>
 
   </div>
-
-  <script>
-    function drawVeins() {
-      const W  = window.innerWidth;
-      const H  = window.innerHeight;
-      const cx = W / 2;
-      const svg = document.getElementById('vein-bg');
-      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-
-      const lines = [];
-
-      // Central midrib
-      lines.push(`<line x1="${cx}" y1="0" x2="${cx}" y2="${H}"/>`);
-
-      const n = 6;
-      for (let i = 0; i < n; i++) {
-        const t    = (i + 0.5) / n;
-        const y0   = H * (0.06 + t * 0.88);
-        const ang  = (40 + i * 4) * Math.PI / 180;
-        const len  = W * 0.32;
-        const dx   = len * Math.sin(ang);
-        const dy   = len * Math.cos(ang) * 0.18; // slight downward drift
-
-        // Secondary veins — left and right
-        const lx = cx - dx, ly = y0 + dy;
-        const rx = cx + dx, ry = y0 + dy;
-        lines.push(`<line x1="${cx}" y1="${y0}" x2="${lx}" y2="${ly}"/>`);
-        lines.push(`<line x1="${cx}" y1="${y0}" x2="${rx}" y2="${ry}"/>`);
-
-        // Tertiary veins off each secondary
-        [lx, rx].forEach((ex, side) => {
-          const ey  = y0 + dy;
-          const dir = side === 0 ? -1 : 1;
-          for (let j = 1; j <= 3; j++) {
-            const t2  = j / 4;
-            const mx  = cx + (ex - cx) * t2;
-            const my  = y0 + (ey - y0) * t2;
-            const tl  = len * 0.22;
-            const ta  = ang + 0.5;
-            lines.push(`<line x1="${mx}" y1="${my}" x2="${mx + dir * tl * Math.sin(ta)}" y2="${my + tl * 0.15}"/>`);
-          }
-        });
-      }
-
-      svg.innerHTML = lines.join('');
-    }
-
-    drawVeins();
-    window.addEventListener('resize', drawVeins);
-  </script>
 
 </body>
 </html>
