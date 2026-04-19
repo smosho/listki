@@ -223,6 +223,7 @@
         src.start(0);
       } catch(e) {}
     }
+    initAudio(); // attempt autoplay immediately — browser may block, interaction listeners are the fallback
     document.addEventListener("mousemove",  () => initAudio(), { once: true });
     document.addEventListener("touchstart", () => initAudio(), { passive: true });
     document.addEventListener("click",      () => initAudio());
