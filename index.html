@@ -80,6 +80,7 @@
 </head>
 <body>
 
+  <div style="position:fixed;top:16px;right:16px;color:red;font-size:2rem;z-index:999;pointer-events:none;">✕</div>
   <canvas id="bg"></canvas>
   <div id="overlay"></div>
 
@@ -150,31 +151,33 @@
     let reverbWet  = null;
 
     function buildReverb() {
-      const dur = 0.9, decay = 3.2, sr = audioCtx.sampleRate;
-      const len = Math.floor(sr * dur);
-      const ir  = audioCtx.createBuffer(2, len, sr);
-      for (let ch = 0; ch < 2; ch++) {
-        const d = ir.getChannelData(ch);
-        for (let i = 0; i < len; i++)
-          d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
-      }
-      reverbNode = audioCtx.createConvolver();
-      reverbNode.buffer = ir;
-      reverbWet = audioCtx.createGain();
-      reverbWet.gain.value = 0.52;
-      reverbNode.connect(reverbWet);
-      reverbWet.connect(audioCtx.destination);
+      if (MOBILE) return; // ConvolverNode unreliable on iOS Safari — skip
+      try {
+        const dur = 0.9, decay = 3.2, sr = audioCtx.sampleRate;
+        const len = Math.floor(sr * dur);
+        const ir  = audioCtx.createBuffer(2, len, sr);
+        for (let ch = 0; ch < 2; ch++) {
+          const d = ir.getChannelData(ch);
+          for (let i = 0; i < len; i++)
+            d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+        }
+        reverbNode = audioCtx.createConvolver();
+        reverbNode.buffer = ir;
+        reverbWet = audioCtx.createGain();
+        reverbWet.gain.value = 0.52;
+        reverbNode.connect(reverbWet);
+        reverbWet.connect(audioCtx.destination);
+      } catch(e) {}
     }
 
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        buildReverb();
-      }
-      // Resume every time — iOS silently suspends the context between interactions
-      if (audioCtx.state === "suspended") audioCtx.resume();
-      // Play a silent buffer in the same gesture tick to fully unlock iOS
+    async function initAudio() {
       try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          buildReverb();
+        }
+        if (audioCtx.state === "suspended") await audioCtx.resume();
+        // Silent buffer — required by iOS to fully activate the context
         const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
         const src = audioCtx.createBufferSource();
         src.buffer = buf;
@@ -182,9 +185,9 @@
         src.start(0);
       } catch(e) {}
     }
-    document.addEventListener("mousemove",  initAudio, { once: true });
-    document.addEventListener("touchstart", initAudio, { passive: true }); // no once — re-unlock after iOS suspend
-    document.addEventListener("click",      initAudio);
+    document.addEventListener("mousemove",  () => initAudio(), { once: true });
+    document.addEventListener("touchstart", () => initAudio(), { passive: true });
+    document.addEventListener("click",      () => initAudio());
 
     function sine(freq, vol, decay, startTime) {
       const o = audioCtx.createOscillator();
@@ -301,8 +304,8 @@
       el.addEventListener("mouseenter", () => { obj.hovered = true;  });
       el.addEventListener("mouseleave", () => { obj.hovered = false; });
 
-      el.addEventListener("click", () => {
-        initAudio(); // must be first — iOS unlocks audio in the same gesture tick
+      el.addEventListener("click", async () => {
+        await initAudio(); // await resume so context is running before sounds fire
         if (obj.state !== "bouncing") return;
         if (obj.returnTimer) clearTimeout(obj.returnTimer);
 
