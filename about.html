@@ -6,12 +6,44 @@
   <title>listki — o listkih</title>
   <link rel="stylesheet" href="shared.css">
   <style>
-    .about-photo {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      margin: 2.5rem 0;
-      display: block;
+    .process-section {
+      position: relative;
+      padding: 1rem 0 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .process-curve {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      width: 52%;
+      padding: 1.1rem 1.4rem;
+      border: 1px solid rgba(107, 97, 88, 0.18);
+      background: #faf8f5;
+      margin-bottom: 2.8rem;
+    }
+
+    .step:nth-child(even) {
+      margin-left: auto;
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 600px) {
+      .step { width: 78%; }
+      .step:nth-child(even) { margin-left: auto; }
     }
   </style>
 </head>
@@ -27,17 +59,32 @@
 
     <h1>O listkih</h1>
 
-    <img src="naslovnica.jpg" alt="" class="about-photo">
-
     <h2>Proces</h2>
-    <p>Prvi korak je nabiranje listkov. V gozdu, ob pločniku. Na vrtu, na grmičku.</p>
-    <p>Drugi korak je previdno namakanje v tekoč porcelan, dokler plast porcelana na listku ni dovolj močna.</p>
-    <p>Tretji korak je sušenje na zraku. Mnogo listkov v tem koraku odpade, se odkruši ali zvije.</p>
-    <p>Četrti korak je žganje v peči na visoki temperaturi. Organski list zgori, za sabo pa pusti fosil iz porcelana.</p>
-    <p>V petem koraku se odločim, kako se bo končala pot listkov — bodo ogrlice, uhani ali kaj drugega?</p>
-    <p>V zadnjem koraku listke oblečem v srebrne verige in obročke, da nastanejo končni izdelki.</p>
 
-    <img src="detajl.jpg" alt="" class="about-photo">
+    <section class="process-section" id="process-section">
+      <svg class="process-curve" id="process-curve">
+        <path id="curve-path" fill="none" stroke="rgba(107,97,88,0.22)" stroke-width="1" />
+      </svg>
+
+      <div class="step">
+        <p>Prvi korak je nabiranje listkov. V gozdu, ob pločniku. Na vrtu, na grmičku.</p>
+      </div>
+      <div class="step">
+        <p>Drugi korak je previdno namakanje v tekoč porcelan, dokler plast porcelana na listku ni dovolj močna.</p>
+      </div>
+      <div class="step">
+        <p>Tretji korak je sušenje na zraku. Mnogo listkov v tem koraku odpade, se odkruši ali zvije.</p>
+      </div>
+      <div class="step">
+        <p>Četrti korak je žganje v peči na visoki temperaturi. Organski list zgori, za sabo pa pusti fosil iz porcelana.</p>
+      </div>
+      <div class="step">
+        <p>V petem koraku se odločim, kako se bo končala pot listkov — bodo ogrlice, uhani ali kaj drugega?</p>
+      </div>
+      <div class="step">
+        <p>V zadnjem koraku listke oblečem v srebrne verige in obročke, da nastanejo končni izdelki.</p>
+      </div>
+    </section>
 
     <hr>
 
@@ -45,6 +92,41 @@
     <p>Sem Sašo, biokemik in oblikovalec. Uživam ob spoznavanju materialov in rokodelskih tehnik. Opazujem in ustvarjam na preseku oblikovanja in narave. Listki so se zgodili spontano, in se počasi nadaljujejo :)</p>
 
   </div>
+
+  <script>
+    function drawCurve() {
+      const section = document.getElementById('process-section');
+      const svg     = document.getElementById('process-curve');
+      const pathEl  = document.getElementById('curve-path');
+      const steps   = Array.from(section.querySelectorAll('.step'));
+
+      const sRect = section.getBoundingClientRect();
+      svg.setAttribute('viewBox', `0 0 ${sRect.width} ${sRect.height}`);
+
+      const pts = steps.map(s => {
+        const r = s.getBoundingClientRect();
+        return {
+          x:   r.left - sRect.left + r.width  / 2,
+          top: r.top  - sRect.top,
+          bot: r.bottom - sRect.top,
+        };
+      });
+
+      if (pts.length < 2) return;
+
+      let d = `M ${pts[0].x} ${pts[0].bot}`;
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1], b = pts[i];
+        const gap = b.top - a.bot;
+        d += ` C ${a.x} ${a.bot + gap * 0.5}, ${b.x} ${b.top - gap * 0.5}, ${b.x} ${b.top}`;
+      }
+
+      pathEl.setAttribute('d', d);
+    }
+
+    requestAnimationFrame(() => requestAnimationFrame(drawCurve));
+    window.addEventListener('resize', drawCurve);
+  </script>
 
 </body>
 </html>
