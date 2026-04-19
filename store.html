@@ -51,9 +51,7 @@
     .piece {
       position: relative;
       cursor: pointer;
-      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity  0.5s ease;
-      will-change: transform;
+      transition: transform 0.4s ease, opacity 0.4s ease;
     }
     .piece img {
       width: 100%;
@@ -87,13 +85,47 @@
 
     /* ── Expand states ── */
     .piece.expanded {
-      grid-column: span 2;
-      grid-row: span 2;
-      outline: 1px solid rgba(107, 97, 88, 0.45);
+      position: fixed !important;
+      z-index: 200;
       cursor: default;
-      position: relative;
-      z-index: 10;
+      background: #f5f2ee;
+      border: 1px solid rgba(107, 97, 88, 0.45);
+      transition: left 0.45s ease, top 0.45s ease, width 0.45s ease;
+      margin: 0 !important;
     }
+
+    /* Shrink non-expanded pieces */
+    .pieces-grid.has-expanded .piece:not(.expanded) {
+      transform: scale(0.72);
+      cursor: pointer;
+    }
+    .pieces-grid.has-expanded .piece:not(.expanded) .piece-name,
+    .pieces-grid.has-expanded .piece:not(.expanded) .piece-meta,
+    .pieces-grid.has-expanded .piece:not(.expanded) .piece-price {
+      opacity: 0;
+    }
+
+    /* Close button */
+    .piece-close {
+      position: absolute;
+      top: 8px; right: 10px;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      padding: 2px;
+      z-index: 1;
+    }
+    .piece.expanded .piece-close {
+      opacity: 0.5;
+      pointer-events: all;
+    }
+    .piece-close:hover { opacity: 1 !important; }
 
     .piece-extra {
       display: none;
@@ -191,6 +223,7 @@
     <div class="pieces-grid" id="pieces-grid">
 
       <div class="piece" data-type="ogrlice" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-01.jpg" alt="Kos 01">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -203,6 +236,7 @@
       </div>
 
       <div class="piece" data-type="ogrlice" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-02.jpg" alt="Kos 02">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -215,6 +249,7 @@
       </div>
 
       <div class="piece" data-type="ogrlice" data-status="prodano">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-03.jpg" alt="Kos 03">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -226,6 +261,7 @@
       </div>
 
       <div class="piece" data-type="ogrlice" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-04.jpg" alt="Kos 04">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -238,6 +274,7 @@
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-05.jpg" alt="Kos 05">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -250,6 +287,7 @@
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-06.jpg" alt="Kos 06">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -262,6 +300,7 @@
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-07.jpg" alt="Kos 07">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -274,6 +313,7 @@
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-08.jpg" alt="Kos 08">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -286,6 +326,7 @@
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-09.jpg" alt="Kos 09">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -298,6 +339,7 @@
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-10.jpg" alt="Kos 10">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -310,6 +352,7 @@
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-11.jpg" alt="Kos 11">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -322,6 +365,7 @@
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
+        <button class="piece-close" aria-label="Zapri">&#x2715;</button>
         <img src="single-12.jpg" alt="Kos 12">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
@@ -392,24 +436,62 @@
     });
 
     // ── Expand / collapse ──────────────────────────────────────────────────
+    const grid = document.getElementById('pieces-grid');
+
     function expandPiece(el) {
+      const rect    = el.getBoundingClientRect();
+      const targetW = Math.min(window.innerWidth * 0.38, 420);
+      const targetX = (window.innerWidth  - targetW) / 2;
+      const targetY = Math.max(30, (window.innerHeight - targetW * 1.65) / 2);
+
+      // Place at current position instantly (no transition)
+      el.style.transition = 'none';
+      el.style.left   = rect.left + 'px';
+      el.style.top    = rect.top  + 'px';
+      el.style.width  = rect.width + 'px';
       el.classList.add('expanded');
-      overlay.classList.add('active');
+
+      el.offsetHeight; // force reflow
+
+      // Animate to center
+      el.style.transition = '';
+      el.style.left  = targetX + 'px';
+      el.style.top   = targetY + 'px';
+      el.style.width = targetW + 'px';
+
+      grid.classList.add('has-expanded');
       expanded = el;
     }
 
-    function collapse() {
+    function collapse(immediate) {
       if (!expanded) return;
-      expanded.classList.remove('expanded');
-      overlay.classList.remove('active');
-      expanded = null;
+      const el = expanded;
+      expanded  = null;
+      grid.classList.remove('has-expanded');
+
+      if (immediate) {
+        el.style.cssText = '';
+        el.classList.remove('expanded');
+      } else {
+        // Animate to fade out
+        el.style.opacity = '0';
+        setTimeout(() => {
+          el.style.cssText = '';
+          el.classList.remove('expanded');
+        }, 380);
+      }
     }
 
     pieces.forEach(el => {
       el.addEventListener('click', e => {
-        if (expanded === el) { collapse(); return; }
-        if (expanded) collapse();
+        if (expanded === el) return;
+        if (expanded) { collapse(true); expandPiece(el); return; }
         expandPiece(el);
+      });
+
+      el.querySelector('.piece-close').addEventListener('click', e => {
+        e.stopPropagation();
+        collapse();
       });
 
       const buyBtn = el.querySelector('.piece-buy');
@@ -421,12 +503,11 @@
           document.getElementById('message').value = `Zanima me kos: ${name}\n`;
           setTimeout(() => {
             document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
-          }, 300);
+          }, 400);
         });
       }
     });
 
-    overlay.addEventListener('click', collapse);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') collapse(); });
 
     // ── Form submit ────────────────────────────────────────────────────────
