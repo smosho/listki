@@ -86,15 +86,13 @@
     }
 
     /* ── Expand states ── */
-    .piece.pushed {
-      opacity: 0;
-      transform: scale(0.9) translateY(22px);
-      pointer-events: none;
-    }
     .piece.expanded {
-      z-index: 100;
+      grid-column: span 2;
+      grid-row: span 2;
+      outline: 1px solid rgba(107, 97, 88, 0.45);
       cursor: default;
-      background: #f5f2ee;
+      position: relative;
+      z-index: 10;
     }
 
     .piece-extra {
@@ -135,17 +133,14 @@
     }
     .piece-buy:hover { opacity: 1; }
 
-    /* ── Overlay ── */
+    /* ── Overlay (invisible click trap) ── */
     #store-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(245, 242, 238, 0);
       pointer-events: none;
-      transition: background 0.4s ease;
-      z-index: 50;
+      z-index: 5;
     }
     #store-overlay.active {
-      background: rgba(245, 242, 238, 0.75);
       pointer-events: all;
     }
 
@@ -398,25 +393,14 @@
 
     // ── Expand / collapse ──────────────────────────────────────────────────
     function expandPiece(el) {
-      const rect  = el.getBoundingClientRect();
-      const cx    = window.innerWidth  / 2;
-      const cy    = window.innerHeight / 2;
-      const tx    = cx - (rect.left + rect.width  / 2);
-      const ty    = cy - (rect.top  + rect.height / 2);
-      const scale = Math.min(window.innerWidth * 0.36 / rect.width, 2.6);
-
-      el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
       el.classList.add('expanded');
-      pieces.forEach(p => { if (p !== el) p.classList.add('pushed'); });
       overlay.classList.add('active');
       expanded = el;
     }
 
     function collapse() {
       if (!expanded) return;
-      expanded.style.transform = '';
       expanded.classList.remove('expanded');
-      pieces.forEach(p => p.classList.remove('pushed'));
       overlay.classList.remove('active');
       expanded = null;
     }
