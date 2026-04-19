@@ -258,7 +258,7 @@
       }, 620);
     }
 
-    overlay.addEventListener("click", dismissZoom);
+    overlay.addEventListener("click", () => { initAudio(); dismissZoom(); });
     document.addEventListener("keydown", e => { if (e.key === "Escape") dismissZoom(); });
 
     const items = photos.map((src, i) => {
@@ -302,6 +302,7 @@
       el.addEventListener("mouseleave", () => { obj.hovered = false; });
 
       el.addEventListener("click", () => {
+        initAudio(); // must be first — iOS unlocks audio in the same gesture tick
         if (obj.state !== "bouncing") return;
         if (obj.returnTimer) clearTimeout(obj.returnTimer);
 
