@@ -6,8 +6,38 @@
   <title>listki — o listkih</title>
   <link rel="stylesheet" href="shared.css">
   <style>
-    .process-section p {
-      margin: 0 0 1.8rem 0;
+    .page {
+      padding: 0 2rem 6rem;
+      text-align: center;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .process-grid { grid-template-columns: 1fr; }
+    }
+
+    .process-box {
+      border: 1px solid rgba(107, 97, 88, 0.3);
+      padding: 1.6rem 1.4rem;
+      text-align: left;
+    }
+
+    .process-box p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .rokodelec {
+      max-width: 52ch;
+      margin: 0 auto;
+      text-align: left;
     }
   </style>
 </head>
@@ -19,28 +49,29 @@
     <a href="about.html" class="active">o listkih</a>
   </nav>
 
-  <div style="padding: 0 2rem 6rem;">
+  <div class="page">
 
     <h1>O listkih</h1>
 
     <h2>Proces</h2>
 
-    <section class="process-section">
-      <p>Prvi korak je nabiranje listkov. V gozdu, ob pločniku. Na vrtu, na grmičku.</p>
-      <p>Drugi korak je previdno namakanje v tekoč porcelan, dokler plast porcelana na listku ni dovolj močna.</p>
-      <p>Tretji korak je sušenje na zraku. Mnogo listkov v tem koraku odpade, se odkruši ali zvije.</p>
-      <p>Četrti korak je žganje v peči na visoki temperaturi. Organski list zgori, za sabo pa pusti fosil iz porcelana.</p>
-      <p>V petem koraku se odločim, kako se bo končala pot listkov — bodo ogrlice, uhani ali kaj drugega?</p>
-      <p>V zadnjem koraku listke oblečem v srebrne verige in obročke, da nastanejo končni izdelki.</p>
-    </section>
+    <div class="process-grid">
+      <div class="process-box"><p>Prvi korak je nabiranje listkov. V gozdu, ob pločniku. Na vrtu, na grmičku.</p></div>
+      <div class="process-box"><p>Drugi korak je previdno namakanje v tekoč porcelan, dokler plast porcelana na listku ni dovolj močna.</p></div>
+      <div class="process-box"><p>Tretji korak je sušenje na zraku. Mnogo listkov v tem koraku odpade, se odkruši ali zvije.</p></div>
+      <div class="process-box"><p>Četrti korak je žganje v peči na visoki temperaturi. Organski list zgori, za sabo pa pusti fosil iz porcelana.</p></div>
+      <div class="process-box"><p>V petem koraku se odločim, kako se bo končala pot listkov — bodo ogrlice, uhani ali kaj drugega?</p></div>
+      <div class="process-box"><p>V zadnjem koraku listke oblečem v srebrne verige in obročke, da nastanejo končni izdelki.</p></div>
+    </div>
 
     <hr>
 
     <h2>Rokodelec</h2>
-    <p>Sem Sašo, biokemik in oblikovalec. Uživam ob spoznavanju materialov in rokodelskih tehnik. Opazujem in ustvarjam na preseku oblikovanja in narave. Listki so se zgodili spontano, in se počasi nadaljujejo :)</p>
+    <div class="rokodelec">
+      <p>Sem Sašo, biokemik in oblikovalec. Uživam ob spoznavanju materialov in rokodelskih tehnik. Opazujem in ustvarjam na preseku oblikovanja in narave. Listki so se zgodili spontano, in se počasi nadaljujejo :)</p>
+    </div>
 
   </div>
-
 
 </body>
 </html>
