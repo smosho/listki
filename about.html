@@ -6,23 +6,8 @@
   <title>listki — o listkih</title>
   <link rel="stylesheet" href="shared.css">
   <style>
-    .process-section {
-      position: relative;
-      margin: 0 auto;
-      max-width: 800px;
-    }
-
-    .step {
-      position: absolute;
-      background: none;
-      border: none;
-      padding: 0;
-    }
-
-    .step p {
-      margin: 0;
-      font-size: 0.75rem;
-      line-height: 1.35;
+    .process-section p {
+      margin: 0 0 1.8rem 0;
     }
   </style>
 </head>
@@ -40,59 +25,22 @@
 
     <h2>Proces</h2>
 
-    <section class="process-section" id="process-section">
-      <svg id="stair-svg" style="position:absolute;top:0;left:0;width:100%;pointer-events:none;overflow:visible;"></svg>
-
-      <div class="step"><p>Prvi korak je nabiranje listkov. V gozdu, ob pločniku. Na vrtu, na grmičku.</p></div>
-      <div class="step"><p>Drugi korak je previdno namakanje v tekoč porcelan, dokler plast porcelana na listku ni dovolj močna.</p></div>
-      <div class="step"><p>Tretji korak je sušenje na zraku. Mnogo listkov v tem koraku odpade, se odkruši ali zvije.</p></div>
-      <div class="step"><p>Četrti korak je žganje v peči na visoki temperaturi. Organski list zgori, za sabo pa pusti fosil iz porcelana.</p></div>
-      <div class="step"><p>V petem koraku se odločim, kako se bo končala pot listkov — bodo ogrlice, uhani ali kaj drugega?</p></div>
-      <div class="step"><p>V zadnjem koraku listke oblečem v srebrne verige in obročke, da nastanejo končni izdelki.</p></div>
+    <section class="process-section">
+      <p>Prvi korak je nabiranje listkov. V gozdu, ob pločniku. Na vrtu, na grmičku.</p>
+      <p>Drugi korak je previdno namakanje v tekoč porcelan, dokler plast porcelana na listku ni dovolj močna.</p>
+      <p>Tretji korak je sušenje na zraku. Mnogo listkov v tem koraku odpade, se odkruši ali zvije.</p>
+      <p>Četrti korak je žganje v peči na visoki temperaturi. Organski list zgori, za sabo pa pusti fosil iz porcelana.</p>
+      <p>V petem koraku se odločim, kako se bo končala pot listkov — bodo ogrlice, uhani ali kaj drugega?</p>
+      <p>V zadnjem koraku listke oblečem v srebrne verige in obročke, da nastanejo končni izdelki.</p>
     </section>
 
-    <hr id="after-process">
+    <hr>
 
     <h2>Rokodelec</h2>
     <p>Sem Sašo, biokemik in oblikovalec. Uživam ob spoznavanju materialov in rokodelskih tehnik. Opazujem in ustvarjam na preseku oblikovanja in narave. Listki so se zgodili spontano, in se počasi nadaljujejo :)</p>
 
   </div>
 
-  <script>
-    function buildStaircase() {
-      const section = document.getElementById('process-section');
-      const svg     = document.getElementById('stair-svg');
-      const steps   = Array.from(section.querySelectorAll('.step'));
-      const n       = steps.length;
-      const W       = section.offsetWidth;
-
-      const tread  = Math.floor(W / n);
-      const dropH  = 70;
-      const totalH = n * dropH + 40;
-
-      section.style.height = totalH + 'px';
-      svg.style.height     = totalH + 'px';
-      svg.setAttribute('viewBox', `0 0 ${W} ${totalH}`);
-
-      let d = 'M 0 0';
-      steps.forEach((el, i) => {
-        const x1 = tread * i;
-        const x2 = tread * (i + 1);
-        const y  = dropH * (i + 1);
-
-        d += ` L ${x1} ${y} L ${x2} ${y}`;
-
-        el.style.left     = x1 + 'px';
-        el.style.bottom   = (totalH - y + 8) + 'px';
-        el.style.maxWidth = (tread - 8) + 'px';
-      });
-
-      svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(107,97,88,0.28)" stroke-width="1"/>`;
-    }
-
-    requestAnimationFrame(() => requestAnimationFrame(buildStaircase));
-    window.addEventListener('resize', buildStaircase);
-  </script>
 
 </body>
 </html>
