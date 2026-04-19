@@ -80,7 +80,6 @@
 </head>
 <body>
 
-  <div style="position:fixed;top:20px;left:20px;width:50px;height:50px;background:red;z-index:999;"></div>
   <canvas id="bg"></canvas>
   <div id="overlay"></div>
 
@@ -172,18 +171,20 @@
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         buildReverb();
       }
+      // Resume every time — iOS silently suspends the context between interactions
       if (audioCtx.state === "suspended") audioCtx.resume();
-      // iOS requires a real sound scheduled in the same gesture to unlock
-      const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
-      const src = audioCtx.createBufferSource();
-      src.buffer = buf;
-      src.connect(audioCtx.destination);
-      src.start(0);
+      // Play a silent buffer in the same gesture tick to fully unlock iOS
+      try {
+        const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(audioCtx.destination);
+        src.start(0);
+      } catch(e) {}
     }
     document.addEventListener("mousemove",  initAudio, { once: true });
-    document.addEventListener("touchstart", initAudio, { once: true, passive: true });
-    document.addEventListener("touchend",   initAudio, { once: true, passive: true });
-    document.addEventListener("click",      initAudio, { once: true });
+    document.addEventListener("touchstart", initAudio, { passive: true }); // no once — re-unlock after iOS suspend
+    document.addEventListener("click",      initAudio);
 
     function sine(freq, vol, decay, startTime) {
       const o = audioCtx.createOscillator();
@@ -200,7 +201,7 @@
 
     // Bounce: single gentle chime
     function playBounce() {
-      if (!audioCtx || audioCtx.state !== "running") return;
+      if (!audioCtx) return;
       const now  = audioCtx.currentTime;
       const freq = LYDIAN_HZ[Math.floor(Math.random() * LYDIAN_HZ.length)];
       sine(freq,     0.038, 1.4, now);
@@ -210,7 +211,7 @@
 
     // Click-zoom: ascending Lydian arpeggio rooted at this photo's note
     function playZoom(noteIdx) {
-      if (!audioCtx || audioCtx.state !== "running") return;
+      if (!audioCtx) return;
       const now = audioCtx.currentTime;
 
       for (let i = 0; i < 5; i++) {
