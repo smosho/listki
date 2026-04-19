@@ -63,29 +63,10 @@
       mix-blend-mode: multiply;
       white-space: nowrap;
     }
-    @keyframes nav-shimmer {
-      from { background-position: 200% center; }
-      to   { background-position: -100% center; }
-    }
-
     #site-nav a {
       text-decoration: none;
-      background: linear-gradient(
-        90deg,
-        rgba(20, 20, 20, 0.6) 25%,
-        rgba(180, 180, 180, 1) 40%,
-        rgba(240, 240, 240, 1) 50%,
-        rgba(180, 180, 180, 1) 60%,
-        rgba(20, 20, 20, 0.6) 75%
-      );
-      background-size: 300% auto;
-      background-position: 200% center;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    #site-nav a:hover {
-      animation: nav-shimmer 1.4s ease-in-out forwards;
+      color: #141414;
+      opacity: 0.6;
     }
 
     .photo {
