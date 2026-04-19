@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herbarij</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      background: #f0ece6;
+      touch-action: manipulation;
+    }
+
+    #bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      filter: blur(70px);
+      opacity: 0.75;
+    }
+
+    @media (max-width: 680px) {
+      #bg { filter: blur(40px); }
+    }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      pointer-events: none;
+      transition: background 0.4s ease;
+      z-index: 50;
+    }
+
+    #overlay.dimmed {
+      background: rgba(0, 0, 0, 0.5);
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    .photo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+      will-change: transform;
+      z-index: 1;
+      touch-action: manipulation;
+    }
+
+    .photo:hover {
+      z-index: 10;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Applied only during click-zoom animation */
+    .photo.zooming {
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  width    0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  height   0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  scale    0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      scale: 1 !important;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg"></canvas>
+  <div id="overlay"></div>
+
+  <script>
+    const MOBILE = window.innerWidth < 680;
+    const SIZE   = MOBILE ? 95 : 150;
+    const SPEED  = MOBILE ? 0.7 : 0.9;
+
+    // Stable viewport dimensions — visualViewport avoids mobile browser-chrome jitter
+    function vw() { return window.visualViewport ? window.visualViewport.width  : window.innerWidth;  }
+    function vh() { return window.visualViewport ? window.visualViewport.height : window.innerHeight; }
+
+    // D Lydian: D E F# G# A B C# — bright & magical
+    const LYDIAN_HZ = [1760.00, 1975.53, 2217.46, 2349.32, 2637.02, 2959.96];
+
+    const FALLBACK_COLORS = [
+      [185, 185, 182], [178, 180, 178], [190, 188, 185],
+      [180, 182, 180], [188, 186, 183], [182, 184, 182],
+    ];
+
+    const photos = [
+      "_DSC9410.jpg",
+      "_DSC9424.jpg",
+      "detajl-2.jpg",
+      "detajl.jpg",
+      "double-1.jpg",
+      "double-2.jpg",
+      "naslovnica.jpg",
+      "single-01.jpg",
+      "single-02.jpg",
+      "single-03.jpg",
+      "single-04.jpg",
+      "single-05.jpg",
+      "single-06.jpg",
+      "single-07.jpg",
+      "single-08.jpg",
+      "single-09.jpg",
+      "single-10.jpg",
+      "single-11.jpg",
+      "single-12.jpg",
+    ];
+
+    function sampleColor(imgEl) {
+      try {
+        const c = document.createElement("canvas");
+        c.width = 12; c.height = 12;
+        const cx = c.getContext("2d");
+        cx.drawImage(imgEl, 0, 0, 12, 12);
+        const d = cx.getImageData(0, 0, 12, 12).data;
+        let r = 0, g = 0, b = 0;
+        for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i+1]; b += d[i+2]; }
+        const n = d.length / 4;
+        r /= n; g /= n; b /= n;
+        // Desaturate 60% toward grey and nudge slightly cool
+        const grey = r * 0.299 + g * 0.587 + b * 0.114;
+        const mix  = 0.6;
+        return [
+          Math.round(r + (grey - r) * mix),
+          Math.round(g + (grey - g) * mix),
+          Math.round(b + (grey - b) * mix + 2), // faint cool nudge
+        ];
+      } catch { return null; }
+    }
+
+    // ── Audio ──────────────────────────────────────────────────────────────
+    let audioCtx   = null;
+    let reverbNode = null;
+    let reverbWet  = null;
+
+    function buildReverb() {
+      const dur = 0.9, decay = 3.2, sr = audioCtx.sampleRate;
+      const len = Math.floor(sr * dur);
+      const ir  = audioCtx.createBuffer(2, len, sr);
+      for (let ch = 0; ch < 2; ch++) {
+        const d = ir.getChannelData(ch);
+        for (let i = 0; i < len; i++)
+          d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      }
+      reverbNode = audioCtx.createConvolver();
+      reverbNode.buffer = ir;
+      reverbWet = audioCtx.createGain();
+      reverbWet.gain.value = 0.52;
+      reverbNode.connect(reverbWet);
+      reverbWet.connect(audioCtx.destination);
+    }
+
+    function initAudio() {
+      if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); buildReverb(); }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+    }
+    document.addEventListener("mousemove",  initAudio, { once: true });
+    document.addEventListener("touchstart", initAudio, { once: true, passive: true });
+
+    function sine(freq, vol, decay, startTime) {
+      const o = audioCtx.createOscillator();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq * 1.012, startTime);
+      o.frequency.exponentialRampToValueAtTime(freq, startTime + 0.03);
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0, startTime);
+      g.gain.linearRampToValueAtTime(vol, startTime + 0.032);
+      g.gain.exponentialRampToValueAtTime(0.0001, startTime + decay);
+      o.connect(g); g.connect(audioCtx.destination); g.connect(reverbNode);
+      o.start(startTime); o.stop(startTime + decay + 0.02);
+    }
+
+    // Bounce: single gentle chime
+    function playBounce() {
+      if (!audioCtx || audioCtx.state !== "running") return;
+      const now  = audioCtx.currentTime;
+      const freq = LYDIAN_HZ[Math.floor(Math.random() * LYDIAN_HZ.length)];
+      sine(freq,     0.038, 1.4, now);
+      sine(freq * 2, 0.014, 0.9, now);
+      sine(freq * 3, 0.006, 0.5, now);
+    }
+
+    // Click-zoom: ascending Lydian arpeggio rooted at this photo's note
+    function playZoom(noteIdx) {
+      if (!audioCtx || audioCtx.state !== "running") return;
+      const now = audioCtx.currentTime;
+
+      for (let i = 0; i < 5; i++) {
+        const freq = LYDIAN_HZ[(noteIdx + i) % LYDIAN_HZ.length];
+        const t    = now + i * 0.10;
+        sine(freq,     0.052, 2.4, t);
+        sine(freq * 2, 0.020, 1.5, t);
+      }
+
+      // Sparkle: two quick high notes at the top with slight swing
+      const top = LYDIAN_HZ[LYDIAN_HZ.length - 1];
+      sine(top * 2, 0.028, 1.1, now + 0.52);
+      sine(top * 4, 0.012, 0.7, now + 0.60);
+    }
+
+    // ── Canvas / overlay ───────────────────────────────────────────────────
+    const canvas  = document.getElementById("bg");
+    const ctx     = canvas.getContext("2d");
+    const overlay = document.getElementById("overlay");
+
+    function resizeCanvas() {
+      canvas.width  = vw();
+      canvas.height = vh();
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    if (window.visualViewport) window.visualViewport.addEventListener("resize", resizeCanvas);
+
+    // ── Items ──────────────────────────────────────────────────────────────
+    let zoomedItem = null;
+
+    function dismissZoom() {
+      if (!zoomedItem) return;
+      const item = zoomedItem;
+      zoomedItem = null;
+      overlay.classList.remove("dimmed");
+      item.el.style.width     = SIZE + "px";
+      item.el.style.height    = SIZE + "px";
+      item.el.style.transform = `translate(${item.frozenX}px, ${item.frozenY}px)`;
+      item.state = "returning";
+      item.returnTimer = setTimeout(() => {
+        item.el.classList.remove("zooming");
+        item.state = "bouncing";
+      }, 620);
+    }
+
+    overlay.addEventListener("click", dismissZoom);
+    document.addEventListener("keydown", e => { if (e.key === "Escape") dismissZoom(); });
+
+    const items = photos.map((src, i) => {
+      const el  = document.createElement("div");
+      el.className = "photo";
+      el.style.width  = SIZE + "px";
+      el.style.height = SIZE + "px";
+      const img = document.createElement("img");
+      img.src = src; img.alt = ""; img.loading = "lazy";
+      el.appendChild(img);
+      document.body.appendChild(el);
+
+      const cols   = Math.ceil(Math.sqrt(photos.length));
+      const rows   = Math.ceil(photos.length / cols);
+      const startX = (i % cols / cols) * (vw() - SIZE);
+      const startY = (Math.floor(i / cols) / rows) * (vh() - SIZE);
+      const angle  = Math.random() * Math.PI * 2;
+      const speed  = SPEED * (0.7 + Math.random() * 0.6);
+
+      const obj = {
+        el, img,
+        x: startX, y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        state: "bouncing",
+        frozenX: 0, frozenY: 0,
+        returnTimer: null,
+        color: FALLBACK_COLORS[i % FALLBACK_COLORS.length],
+        noteIdx: i % LYDIAN_HZ.length,
+        lastBounce: 0,
+        hovered: false,
+        currentScale: 1.0,
+      };
+
+      img.addEventListener("load", () => {
+        const s = sampleColor(img);
+        if (s) obj.color = s;
+      });
+
+      el.addEventListener("mouseenter", () => { obj.hovered = true;  });
+      el.addEventListener("mouseleave", () => { obj.hovered = false; });
+
+      el.addEventListener("click", () => {
+        if (obj.state !== "bouncing") return;
+        if (obj.returnTimer) clearTimeout(obj.returnTimer);
+
+        obj.frozenX = obj.x;
+        obj.frozenY = obj.y;
+        obj.state   = "zoomed";
+        obj.hovered = false;
+        obj.currentScale = 1.0;
+        zoomedItem  = obj;
+
+        const hoverSize = Math.min(vw(), vh()) * (MOBILE ? 0.88 : 0.72);
+        const cx = (vw() - hoverSize) / 2;
+        const cy = (vh() - hoverSize) / 2;
+
+        overlay.classList.add("dimmed");
+        el.classList.add("zooming");
+        el.style.width     = hoverSize + "px";
+        el.style.height    = hoverSize + "px";
+        el.style.transform = `translate(${cx}px, ${cy}px)`;
+
+        playZoom(obj.noteIdx);
+      });
+
+      return obj;
+    });
+
+    // ── Render loop ────────────────────────────────────────────────────────
+    function drawBackground() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const item of items) {
+        const cx = item.state === "zoomed"
+          ? vw() / 2
+          : item.x + SIZE / 2;
+        const cy = item.state === "zoomed"
+          ? vh() / 2
+          : item.y + SIZE / 2;
+
+        const [r, g, b] = item.color;
+        const radius = SIZE * 1.4;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0,   `rgba(${r}, ${g}, ${b}, 1)`);
+        grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.6)`);
+        grad.addColorStop(1,   `rgba(${r}, ${g}, ${b}, 0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function tick() {
+      const W = vw();
+      const H = vh();
+
+      for (const item of items) {
+        if (item.state !== "bouncing") continue;
+
+        item.x += item.vx;
+        item.y += item.vy;
+
+        let bounced = false;
+        if (item.x <= 0)        { item.x = 0;       item.vx =  Math.abs(item.vx); bounced = true; }
+        if (item.x + SIZE >= W) { item.x = W - SIZE; item.vx = -Math.abs(item.vx); bounced = true; }
+        if (item.y <= 0)        { item.y = 0;       item.vy =  Math.abs(item.vy); bounced = true; }
+        if (item.y + SIZE >= H) { item.y = H - SIZE; item.vy = -Math.abs(item.vy); bounced = true; }
+
+        const now = performance.now();
+        if (bounced && now - item.lastBounce > 120) {
+          playBounce();
+          item.lastBounce = now;
+        }
+
+        // Lerp scale toward target — smooth hover without CSS transition interfering
+        const targetScale = item.hovered ? 1.15 : 1.0;
+        item.currentScale += (targetScale - item.currentScale) * 0.15;
+
+        const half = SIZE / 2;
+        item.el.style.transform = `translate(${item.x + half}px, ${item.y + half}px) scale(${item.currentScale}) translate(${-half}px, ${-half}px)`;
+      }
+
+      drawBackground();
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
