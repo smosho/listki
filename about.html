@@ -59,48 +59,39 @@
   </div>
 
   <script>
-    function buildCurve() {
+    function buildStaircase() {
       const section = document.getElementById('process-section');
       const svg     = document.getElementById('stair-svg');
       const steps   = Array.from(section.querySelectorAll('.step'));
       const n       = steps.length;
       const W       = section.offsetWidth;
-      const H       = Math.max(460, W * 0.72);
-      const TEXT_W  = 185;
 
-      section.style.height = H + 'px';
-      svg.style.height     = H + 'px';
-      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      const tread  = Math.floor(W / n);
+      const dropH  = 70;
+      const totalH = n * dropH + 40;
 
-      // Anchor points spread diagonally — horizontal tangents at each point
-      // so the curve "rests" at each text position before curving down
-      const margin  = 0;
-      const tension = Math.min(70, W / (n * 1.8));
+      section.style.height = totalH + 'px';
+      svg.style.height     = totalH + 'px';
+      svg.setAttribute('viewBox', `0 0 ${W} ${totalH}`);
 
-      const pts = steps.map((_, i) => ({
-        x: margin + (i / (n - 1)) * (W - margin - TEXT_W - 20),
-        y: 40    + (i / (n - 1)) * (H - 80),
-      }));
-
-      // Cubic bezier with horizontal control points at each anchor
-      let d = `M ${pts[0].x} ${pts[0].y}`;
-      for (let i = 0; i < n - 1; i++) {
-        const a = pts[i], b = pts[i + 1];
-        d += ` C ${a.x + tension} ${a.y}, ${b.x - tension} ${b.y}, ${b.x} ${b.y}`;
-      }
-
-      svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(107,97,88,0.3)" stroke-width="1"/>`;
-
-      // Text floats just above each anchor
+      let d = 'M 0 0';
       steps.forEach((el, i) => {
-        el.style.left     = pts[i].x + 'px';
-        el.style.bottom   = (H - pts[i].y + 10) + 'px';
-        el.style.maxWidth = TEXT_W + 'px';
+        const x1 = tread * i;
+        const x2 = tread * (i + 1);
+        const y  = dropH * (i + 1);
+
+        d += ` L ${x1} ${y} L ${x2} ${y}`;
+
+        el.style.left     = x1 + 'px';
+        el.style.bottom   = (totalH - y + 8) + 'px';
+        el.style.maxWidth = (tread - 8) + 'px';
       });
+
+      svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(107,97,88,0.28)" stroke-width="1"/>`;
     }
 
-    requestAnimationFrame(() => requestAnimationFrame(buildCurve));
-    window.addEventListener('resize', buildCurve);
+    requestAnimationFrame(() => requestAnimationFrame(buildStaircase));
+    window.addEventListener('resize', buildStaircase);
   </script>
 
 </body>
