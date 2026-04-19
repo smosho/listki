@@ -6,6 +6,34 @@
   <title>listki — trgovina</title>
   <link rel="stylesheet" href="shared.css">
   <style>
+    /* ── Filters ── */
+    .filters {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .filter-group {
+      display: flex;
+      gap: 1.2rem;
+    }
+    .filter-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Luperca', Georgia, serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: inherit;
+      opacity: 0.35;
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+    .filter-btn:hover { opacity: 0.7; }
+    .filter-btn.active { opacity: 1; }
+
+    /* ── Grid ── */
     .pieces-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -19,6 +47,14 @@
       .pieces-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     }
 
+    /* ── Piece card ── */
+    .piece {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity  0.5s ease;
+      will-change: transform;
+    }
     .piece img {
       width: 100%;
       aspect-ratio: 1;
@@ -27,25 +63,21 @@
       margin-bottom: 0.85rem;
     }
     .piece-name {
-      font-family: 'Isenheim', Georgia, serif;
-      font-size: 1rem;
+      font-size: 0.88rem;
       margin-bottom: 0.2rem;
     }
     .piece-meta {
-      font-family: 'Isenheim', Georgia, serif;
       font-size: 0.68rem;
       letter-spacing: 0.1em;
       opacity: 0.45;
       margin-bottom: 0.35rem;
     }
     .piece-price {
-      font-family: 'Isenheim', Georgia, serif;
       font-size: 0.78rem;
       letter-spacing: 0.06em;
     }
     .piece-status {
       display: inline-block;
-      font-family: 'Isenheim', Georgia, serif;
       font-size: 0.62rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -53,13 +85,77 @@
       margin-left: 0.6rem;
     }
 
+    /* ── Expand states ── */
+    .piece.pushed {
+      opacity: 0;
+      transform: scale(0.9) translateY(22px);
+      pointer-events: none;
+    }
+    .piece.expanded {
+      z-index: 100;
+      cursor: default;
+      background: #f5f2ee;
+    }
+
+    .piece-extra {
+      display: none;
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(107,97,88,0.15);
+    }
+    .piece.expanded .piece-extra {
+      display: block;
+    }
+    .piece-description {
+      font-size: 0.78rem;
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+      opacity: 0.8;
+    }
+    .piece-dimensions {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      opacity: 0.45;
+      margin-bottom: 1rem;
+    }
+    .piece-buy {
+      display: inline-block;
+      padding: 0.4rem 0;
+      font-family: 'Luperca', Georgia, serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      border-bottom: 1px solid currentColor;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .piece-buy:hover { opacity: 1; }
+
+    /* ── Overlay ── */
+    #store-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(245, 242, 238, 0);
+      pointer-events: none;
+      transition: background 0.4s ease;
+      z-index: 50;
+    }
+    #store-overlay.active {
+      background: rgba(245, 242, 238, 0.75);
+      pointer-events: all;
+    }
+
+    /* ── Custom order ── */
     .custom-intro {
       max-width: 52ch;
       margin-bottom: 2.5rem;
     }
     #success-msg {
       display: none;
-      font-family: 'Isenheim', Georgia, serif;
       font-size: 0.78rem;
       letter-spacing: 0.1em;
       opacity: 0.6;
@@ -68,6 +164,8 @@
   </style>
 </head>
 <body>
+
+  <div id="store-overlay"></div>
 
   <nav id="site-nav">
     <a href="index.html">listki</a>
@@ -79,91 +177,165 @@
 
     <h1>Trgovina</h1>
 
-    <!-- ── Kosi ── -->
-    <div class="pieces-grid">
+    <!-- ── Filtri ── -->
+    <div class="filters">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="type" data-value="all">Vse</button>
+        <button class="filter-btn" data-filter="type" data-value="ogrlice">Ogrlice</button>
+        <button class="filter-btn" data-filter="type" data-value="uhani">Uhani</button>
+        <button class="filter-btn" data-filter="type" data-value="drugo">Drugo</button>
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="status" data-value="all">Vse</button>
+        <button class="filter-btn" data-filter="status" data-value="na voljo">Na voljo</button>
+        <button class="filter-btn" data-filter="status" data-value="prodano">Prodano</button>
+      </div>
+    </div>
 
-      <div class="piece">
+    <!-- ── Kosi ── -->
+    <div class="pieces-grid" id="pieces-grid">
+
+      <div class="piece" data-type="ogrlice" data-status="na voljo">
         <img src="single-01.jpg" alt="Kos 01">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="ogrlice" data-status="na voljo">
         <img src="single-02.jpg" alt="Kos 02">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="ogrlice" data-status="prodano">
         <img src="single-03.jpg" alt="Kos 03">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">prodano</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="ogrlice" data-status="na voljo">
         <img src="single-04.jpg" alt="Kos 04">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="uhani" data-status="na voljo">
         <img src="single-05.jpg" alt="Kos 05">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="uhani" data-status="na voljo">
         <img src="single-06.jpg" alt="Kos 06">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="uhani" data-status="na voljo">
         <img src="single-07.jpg" alt="Kos 07">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="uhani" data-status="na voljo">
         <img src="single-08.jpg" alt="Kos 08">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="drugo" data-status="na voljo">
         <img src="single-09.jpg" alt="Kos 09">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="drugo" data-status="na voljo">
         <img src="single-10.jpg" alt="Kos 10">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="drugo" data-status="na voljo">
         <img src="single-11.jpg" alt="Kos 11">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
-      <div class="piece">
+      <div class="piece" data-type="drugo" data-status="na voljo">
         <img src="single-12.jpg" alt="Kos 12">
         <div class="piece-name">Ime kosa</div>
         <div class="piece-meta">Material · mere</div>
         <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <div class="piece-extra">
+          <div class="piece-description">Kratek opis kosa.</div>
+          <div class="piece-dimensions">Mere: —</div>
+          <button class="piece-buy">Kupi</button>
+        </div>
       </div>
 
     </div>
@@ -179,7 +351,6 @@
       našla pravo rešitev.
     </p>
 
-    <!-- Zamenjaj YOUR_FORM_ID s svojim ID-jem iz formspree.io -->
     <form id="order-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
       <div class="form-group">
         <label for="name">Ime</label>
@@ -200,19 +371,94 @@
   </div>
 
   <script>
-    const form = document.getElementById("order-form");
-    const msg  = document.getElementById("success-msg");
-    form.addEventListener("submit", async e => {
+    const overlay  = document.getElementById('store-overlay');
+    const pieces   = Array.from(document.querySelectorAll('.piece'));
+    let expanded   = null;
+    const activeFilters = { type: 'all', status: 'all' };
+
+    // ── Filters ────────────────────────────────────────────────────────────
+    function applyFilters() {
+      pieces.forEach(p => {
+        const typeMatch   = activeFilters.type   === 'all' || p.dataset.type   === activeFilters.type;
+        const statusMatch = activeFilters.status === 'all' || p.dataset.status === activeFilters.status;
+        p.style.display = (typeMatch && statusMatch) ? '' : 'none';
+      });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.filter;
+        document.querySelectorAll(`.filter-btn[data-filter="${group}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilters[group] = btn.dataset.value;
+        if (expanded) collapse();
+        applyFilters();
+      });
+    });
+
+    // ── Expand / collapse ──────────────────────────────────────────────────
+    function expandPiece(el) {
+      const rect  = el.getBoundingClientRect();
+      const cx    = window.innerWidth  / 2;
+      const cy    = window.innerHeight / 2;
+      const tx    = cx - (rect.left + rect.width  / 2);
+      const ty    = cy - (rect.top  + rect.height / 2);
+      const scale = Math.min(window.innerWidth * 0.36 / rect.width, 2.6);
+
+      el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      el.classList.add('expanded');
+      pieces.forEach(p => { if (p !== el) p.classList.add('pushed'); });
+      overlay.classList.add('active');
+      expanded = el;
+    }
+
+    function collapse() {
+      if (!expanded) return;
+      expanded.style.transform = '';
+      expanded.classList.remove('expanded');
+      pieces.forEach(p => p.classList.remove('pushed'));
+      overlay.classList.remove('active');
+      expanded = null;
+    }
+
+    pieces.forEach(el => {
+      el.addEventListener('click', e => {
+        if (expanded === el) { collapse(); return; }
+        if (expanded) collapse();
+        expandPiece(el);
+      });
+
+      const buyBtn = el.querySelector('.piece-buy');
+      if (buyBtn) {
+        buyBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          const name = el.querySelector('.piece-name').textContent;
+          collapse();
+          document.getElementById('message').value = `Zanima me kos: ${name}\n`;
+          setTimeout(() => {
+            document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
+          }, 300);
+        });
+      }
+    });
+
+    overlay.addEventListener('click', collapse);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') collapse(); });
+
+    // ── Form submit ────────────────────────────────────────────────────────
+    const form = document.getElementById('order-form');
+    const msg  = document.getElementById('success-msg');
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       const res = await fetch(form.action, {
-        method: "POST",
+        method: 'POST',
         body: new FormData(form),
-        headers: { Accept: "application/json" },
+        headers: { Accept: 'application/json' },
       });
       if (res.ok) {
         form.reset();
-        form.style.display = "none";
-        msg.style.display  = "block";
+        form.style.display = 'none';
+        msg.style.display  = 'block';
       }
     });
   </script>
