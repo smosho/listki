@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>listki</title>
   <style>
+    @font-face {
+      font-family: 'Isenheim';
+      src: url('isenheim-main/fonts/OpenType-PS/Isenheim_Regulier.otf') format('opentype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Isenheim';
+      src: url('isenheim-main/fonts/OpenType-PS/Isenheim_Fin.otf') format('opentype');
+      font-weight: 300;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -41,6 +52,29 @@
       pointer-events: all;
       cursor: pointer;
     }
+
+    #site-nav {
+      position: fixed;
+      top: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      display: flex;
+      gap: 2.5rem;
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-family: 'Isenheim', Georgia, serif;
+      mix-blend-mode: multiply;
+      white-space: nowrap;
+    }
+    #site-nav a {
+      text-decoration: none;
+      color: #2a2520;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    #site-nav a:hover { opacity: 1; }
 
     .photo {
       position: fixed;
@@ -82,6 +116,12 @@
 
   <canvas id="bg"></canvas>
   <div id="overlay"></div>
+
+  <nav id="site-nav">
+    <a href="index.html">listki</a>
+    <a href="store.html">trgovina</a>
+    <a href="about.html">o nas</a>
+  </nav>
 
   <script>
     const MOBILE = window.innerWidth < 680;

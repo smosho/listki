@@ -1,0 +1,141 @@
+@font-face {
+  font-family: 'Isenheim';
+  src: url('isenheim-main/fonts/OpenType-PS/Isenheim_Regulier.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Isenheim';
+  src: url('isenheim-main/fonts/OpenType-PS/Isenheim_Fin.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #f5f2ee;
+  color: #2a2520;
+  font-family: 'Isenheim', Georgia, serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+a { color: inherit; }
+
+/* ── Nav ── */
+#site-nav {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 2.2rem 2rem;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  font-family: 'Isenheim', Georgia, serif;
+}
+#site-nav a {
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+#site-nav a:hover,
+#site-nav a.active { opacity: 1; }
+
+/* ── Container ── */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* ── Typography ── */
+h1 {
+  font-size: 1.05rem;
+  font-family: 'Isenheim', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  opacity: 0.5;
+}
+
+h2 {
+  font-size: 0.72rem;
+  font-family: 'Isenheim', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 1.2rem;
+  margin-top: 3.5rem;
+}
+
+p {
+  margin-bottom: 1.2rem;
+  max-width: 60ch;
+}
+
+/* ── Divider ── */
+hr {
+  border: none;
+  border-top: 1px solid rgba(42, 37, 32, 0.12);
+  margin: 3rem 0;
+}
+
+/* ── Form ── */
+.form-group {
+  margin-bottom: 1.4rem;
+}
+.form-group label {
+  display: block;
+  font-family: 'Isenheim', Georgia, serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 0.45rem;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(42, 37, 32, 0.25);
+  padding: 0.4rem 0;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  color: #2a2520;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-bottom-color: #2a2520;
+}
+.form-group textarea { min-height: 100px; }
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.6rem 0;
+  font-family: 'Isenheim', Georgia, serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #2a2520;
+  cursor: pointer;
+  color: #2a2520;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 1; }
+
+@media (max-width: 600px) {
+  .container { padding: 0 1.2rem 4rem; }
+}
