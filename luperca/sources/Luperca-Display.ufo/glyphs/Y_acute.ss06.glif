@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Yacute.ss06" format="2">
+  <advance width="636"/>
+  <anchor x="320" y="0" name="bottom"/>
+  <anchor x="320" y="810" name="top"/>
+  <anchor x="24" y="700" name="topleft"/>
+  <outline>
+    <component base="Y.ss06"/>
+    <component base="acutecomb" xOffset="226"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 14:48:06 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

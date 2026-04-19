@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="A_A.dlig" format="2">
+  <advance width="1255"/>
+  <guideline x="960" y="-225" angle="0"/>
+  <guideline x="623.5" y="-120" angle="0"/>
+  <outline>
+    <contour>
+      <point x="1055.5" y="248" type="curve" smooth="yes"/>
+      <point x="1141" y="0" type="line"/>
+      <point x="1225" y="0" type="line"/>
+      <point x="1225" y="28" type="line"/>
+      <point x="1196.5" y="30"/>
+      <point x="1185.5" y="39"/>
+      <point x="1172" y="74" type="curve" smooth="yes"/>
+      <point x="934" y="730" type="line"/>
+      <point x="906" y="730" type="line"/>
+      <point x="624" y="-115.5" type="line"/>
+      <point x="349" y="730" type="line"/>
+      <point x="321" y="730" type="line"/>
+      <point x="79.5" y="64.5" type="line"/>
+      <point x="67.5" y="37.5"/>
+      <point x="55" y="29.5"/>
+      <point x="30" y="28" type="curve"/>
+      <point x="30" y="0" type="line"/>
+      <point x="150" y="0" type="line"/>
+      <point x="150" y="28" type="line"/>
+      <point x="124.5" y="29.5"/>
+      <point x="120.5" y="37.5"/>
+      <point x="131" y="70.5" type="curve" smooth="yes"/>
+      <point x="193.5" y="248" type="line" smooth="yes"/>
+      <point x="197.5" y="259"/>
+      <point x="202.5" y="264.5"/>
+      <point x="213" y="264.5" type="curve" smooth="yes"/>
+      <point x="440" y="264.5" type="line" smooth="yes"/>
+      <point x="450.5" y="264.5"/>
+      <point x="456" y="259"/>
+      <point x="459.5" y="248" type="curve" smooth="yes"/>
+      <point x="609.5" y="-225" type="line"/>
+      <point x="637.5" y="-225" type="line"/>
+      <point x="791" y="251" type="line" smooth="yes"/>
+      <point x="795" y="261"/>
+      <point x="800" y="264.5"/>
+      <point x="809.5" y="264.5" type="curve" smooth="yes"/>
+      <point x="1036" y="264.5" type="line" smooth="yes"/>
+      <point x="1046.5" y="264.5"/>
+      <point x="1051.5" y="259"/>
+    </contour>
+    <contour>
+      <point x="214" y="306" type="line"/>
+      <point x="333.5" y="646" type="line"/>
+      <point x="441" y="306" type="line"/>
+    </contour>
+    <contour>
+      <point x="809" y="306" type="line"/>
+      <point x="918.5" y="646" type="line"/>
+      <point x="1035.5" y="306" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 16:37:33 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>A</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>A</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_part.stembothmiddle" format="2">
+  <advance width="260"/>
+  <outline>
+    <contour>
+      <point x="145" y="0" type="line"/>
+      <point x="195" y="0" type="line"/>
+      <point x="195" y="8" type="line"/>
+      <point x="165.5" y="10"/>
+      <point x="155" y="21"/>
+      <point x="155" y="52" type="curve"/>
+      <point x="155" y="113" type="line"/>
+      <point x="155" y="587" type="line"/>
+      <point x="155" y="648" type="line"/>
+      <point x="155" y="679"/>
+      <point x="164.5" y="690"/>
+      <point x="194" y="692" type="curve"/>
+      <point x="194" y="700" type="line"/>
+      <point x="145" y="700" type="line"/>
+      <point x="115" y="700" type="line"/>
+      <point x="66" y="700" type="line"/>
+      <point x="66" y="692" type="line"/>
+      <point x="95.5" y="690"/>
+      <point x="105" y="679"/>
+      <point x="105" y="648" type="curve"/>
+      <point x="105" y="587" type="line"/>
+      <point x="105" y="113" type="line"/>
+      <point x="105" y="52" type="line"/>
+      <point x="105" y="21"/>
+      <point x="94.5" y="10"/>
+      <point x="65" y="8" type="curve"/>
+      <point x="65" y="0" type="line"/>
+      <point x="115" y="0" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+    </dict>
+  </lib>
+</glyph>

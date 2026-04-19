@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Ecaron" format="2">
+  <advance width="591"/>
+  <unicode hex="011A"/>
+  <unicode hex="011B"/>
+  <anchor x="296" y="0" name="bottom"/>
+  <anchor x="473" y="0" name="ogonek"/>
+  <anchor x="296" y="880.4" name="top"/>
+  <anchor x="17" y="700" name="topleft"/>
+  <outline>
+    <component base="E"/>
+    <component base="uni030C" xOffset="170"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 14:48:06 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

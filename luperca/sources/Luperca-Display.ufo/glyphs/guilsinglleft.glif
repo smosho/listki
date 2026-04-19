@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="guilsinglleft" format="2">
+  <advance width="190"/>
+  <unicode hex="2039"/>
+  <outline>
+    <contour>
+      <point x="167.5" y="105" type="line"/>
+      <point x="174" y="109.5" type="line"/>
+      <point x="75" y="320" type="line"/>
+      <point x="174" y="530.5" type="line"/>
+      <point x="167.5" y="535" type="line"/>
+      <point x="26" y="320" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

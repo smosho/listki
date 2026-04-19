@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni0145" format="2">
+  <advance width="654"/>
+  <unicode hex="0145"/>
+  <unicode hex="0146"/>
+  <anchor x="318" y="-200" name="bottom"/>
+  <anchor x="332" y="700" name="top"/>
+  <outline>
+    <component base="N"/>
+    <component base="uni0326" xOffset="260.5"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 14:48:06 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

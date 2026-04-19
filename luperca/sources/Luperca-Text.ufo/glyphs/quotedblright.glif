@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="quotedblright" format="2">
+  <advance width="282"/>
+  <unicode hex="201D"/>
+  <guideline x="219.5" y="737.5" angle="0"/>
+  <outline>
+    <contour>
+      <point x="129" y="452.5" type="curve"/>
+      <point x="153.5" y="439" type="line"/>
+      <point x="211" y="507.5"/>
+      <point x="256" y="623"/>
+      <point x="256" y="701.5" type="curve" smooth="yes"/>
+      <point x="256" y="725.5"/>
+      <point x="241.5" y="737.5"/>
+      <point x="226.5" y="737.5" type="curve" smooth="yes"/>
+      <point x="211" y="737.5"/>
+      <point x="196" y="725"/>
+      <point x="196" y="700" type="curve" smooth="yes"/>
+      <point x="196" y="615.5"/>
+      <point x="175.5" y="540.5"/>
+    </contour>
+    <contour>
+      <point x="26" y="452.5" type="curve"/>
+      <point x="50.5" y="439" type="line"/>
+      <point x="111.5" y="512"/>
+      <point x="153" y="618.5"/>
+      <point x="153" y="701.5" type="curve" smooth="yes"/>
+      <point x="153" y="725.5"/>
+      <point x="138.5" y="737.5"/>
+      <point x="123.5" y="737.5" type="curve" smooth="yes"/>
+      <point x="108" y="737.5"/>
+      <point x="93" y="725"/>
+      <point x="93" y="700" type="curve" smooth="yes"/>
+      <point x="93" y="620"/>
+      <point x="70.5" y="536.5"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

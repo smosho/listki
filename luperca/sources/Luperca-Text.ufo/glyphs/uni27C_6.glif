@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni27C6" format="2">
+  <advance width="307"/>
+  <unicode hex="27C6"/>
+  <outline>
+    <contour>
+      <point x="204" y="730" type="curve"/>
+      <point x="212" y="703" type="line"/>
+      <point x="143.5" y="682"/>
+      <point x="84" y="634.5"/>
+      <point x="84" y="547" type="curve" smooth="yes"/>
+      <point x="84" y="385"/>
+      <point x="281" y="297.5"/>
+      <point x="281" y="148" type="curve" smooth="yes"/>
+      <point x="281" y="51.5"/>
+      <point x="199.5" y="-19.5"/>
+      <point x="104" y="-30" type="curve"/>
+      <point x="96" y="-3" type="line"/>
+      <point x="161.5" y="17"/>
+      <point x="226.5" y="63"/>
+      <point x="226.5" y="151.5" type="curve" smooth="yes"/>
+      <point x="226.5" y="308"/>
+      <point x="26.5" y="399"/>
+      <point x="26" y="549" type="curve" smooth="yes"/>
+      <point x="25.5" y="651"/>
+      <point x="118" y="720.5"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

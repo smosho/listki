@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="colon.ss06" format="2">
+  <advance width="142"/>
+  <guideline x="73.5" y="310" angle="0"/>
+  <outline>
+    <contour>
+      <point x="16" y="0" type="line"/>
+      <point x="126" y="0" type="line"/>
+      <point x="71" y="96" type="line"/>
+    </contour>
+    <contour>
+      <point x="16" y="265" type="line"/>
+      <point x="126" y="265" type="line"/>
+      <point x="71" y="361" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

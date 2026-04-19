@@ -1,13 +1,7 @@
 @font-face {
-  font-family: 'Isenheim';
-  src: url('isenheim-main/fonts/OpenType-PS/Isenheim_Regulier.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Isenheim';
-  src: url('isenheim-main/fonts/OpenType-PS/Isenheim_Fin.otf') format('opentype');
-  font-weight: 300;
+  font-family: 'Luperca';
+  src: url('luperca/fonts/variable/LupercaVF.ttf') format('truetype');
+  font-weight: 100 900;
   font-style: normal;
 }
 
@@ -16,7 +10,7 @@
 body {
   background: #f5f2ee;
   color: #2a2520;
-  font-family: 'Isenheim', Georgia, serif;
+  font-family: 'Luperca', Georgia, serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.75;
@@ -34,7 +28,7 @@ a { color: inherit; }
   letter-spacing: 0.18em;
   font-size: 0.72rem;
   text-transform: uppercase;
-  font-family: 'Isenheim', Georgia, serif;
+  font-family: 'Luperca', Georgia, serif;
 }
 #site-nav a {
   text-decoration: none;
@@ -54,7 +48,7 @@ a { color: inherit; }
 /* ── Typography ── */
 h1 {
   font-size: 1.05rem;
-  font-family: 'Isenheim', Georgia, serif;
+  font-family: 'Luperca', Georgia, serif;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -64,7 +58,7 @@ h1 {
 
 h2 {
   font-size: 0.72rem;
-  font-family: 'Isenheim', Georgia, serif;
+  font-family: 'Luperca', Georgia, serif;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -91,7 +85,7 @@ hr {
 }
 .form-group label {
   display: block;
-  font-family: 'Isenheim', Georgia, serif;
+  font-family: 'Luperca', Georgia, serif;
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -122,7 +116,7 @@ hr {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.6rem 0;
-  font-family: 'Isenheim', Georgia, serif;
+  font-family: 'Luperca', Georgia, serif;
   font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;

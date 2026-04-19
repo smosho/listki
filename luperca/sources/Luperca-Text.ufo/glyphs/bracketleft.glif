@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="bracketleft" format="2">
+  <advance width="245"/>
+  <unicode hex="005B"/>
+  <guideline x="286.5" y="-30" angle="0"/>
+  <guideline x="297.5" y="730" angle="0"/>
+  <outline>
+    <contour>
+      <point x="90" y="-30" type="line"/>
+      <point x="135" y="-30" type="line"/>
+      <point x="223" y="-30" type="line"/>
+      <point x="223" y="-2" type="line"/>
+      <point x="160.5" y="12"/>
+      <point x="145" y="21"/>
+      <point x="145" y="52" type="curve"/>
+      <point x="145" y="103" type="line"/>
+      <point x="145" y="597" type="line"/>
+      <point x="145" y="648" type="line"/>
+      <point x="145" y="679"/>
+      <point x="160.5" y="687.5"/>
+      <point x="223" y="702" type="curve"/>
+      <point x="223" y="730" type="line"/>
+      <point x="135" y="730" type="line"/>
+      <point x="90" y="730" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

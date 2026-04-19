@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="asciitilde" format="2">
+  <advance width="324"/>
+  <unicode hex="007E"/>
+  <outline>
+    <contour>
+      <point x="160.5" y="321.5" type="curve" smooth="yes"/>
+      <point x="189.5" y="311.5"/>
+      <point x="212.5" y="305"/>
+      <point x="231.5" y="305" type="curve" smooth="yes"/>
+      <point x="264" y="305"/>
+      <point x="286" y="322.5"/>
+      <point x="308" y="369" type="curve"/>
+      <point x="301.5" y="373.5" type="line"/>
+      <point x="289.5" y="350"/>
+      <point x="270" y="342"/>
+      <point x="248" y="342" type="curve" smooth="yes"/>
+      <point x="224.5" y="342"/>
+      <point x="197" y="351"/>
+      <point x="171.5" y="361.5" type="curve" smooth="yes"/>
+      <point x="143" y="372.5"/>
+      <point x="116.5" y="380"/>
+      <point x="93" y="380" type="curve" smooth="yes"/>
+      <point x="58.5" y="380"/>
+      <point x="30.5" y="363.5"/>
+      <point x="16" y="318" type="curve"/>
+      <point x="22" y="312.5" type="line"/>
+      <point x="32" y="334.5"/>
+      <point x="51.5" y="342"/>
+      <point x="74" y="342" type="curve" smooth="yes"/>
+      <point x="101" y="342"/>
+      <point x="133" y="331"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

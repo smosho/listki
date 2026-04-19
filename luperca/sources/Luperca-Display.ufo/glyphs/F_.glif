@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="F" format="2">
+  <advance width="515"/>
+  <unicode hex="0046"/>
+  <unicode hex="0066"/>
+  <guideline x="418.5" y="378" angle="90"/>
+  <guideline x="120.5" y="364" angle="0"/>
+  <outline>
+    <contour>
+      <point x="502.5" y="539.5" type="curve"/>
+      <point x="509" y="544.5" type="line"/>
+      <point x="481" y="585.5"/>
+      <point x="427.5" y="654"/>
+      <point x="387" y="700" type="curve"/>
+      <point x="120" y="700" type="line"/>
+      <point x="71" y="700" type="line"/>
+      <point x="71" y="692" type="line"/>
+      <point x="100.5" y="690"/>
+      <point x="110" y="679"/>
+      <point x="110" y="648" type="curve"/>
+      <point x="110" y="587" type="line"/>
+      <point x="110" y="113" type="line"/>
+      <point x="110" y="52" type="line"/>
+      <point x="110" y="21"/>
+      <point x="99.5" y="10"/>
+      <point x="70" y="8" type="curve"/>
+      <point x="70" y="0" type="line"/>
+      <point x="120" y="0" type="line"/>
+      <point x="150" y="0" type="line"/>
+      <point x="238" y="0" type="line"/>
+      <point x="238" y="8" type="line"/>
+      <point x="175.5" y="12"/>
+      <point x="160" y="21"/>
+      <point x="160" y="52" type="curve"/>
+      <point x="160" y="113" type="line"/>
+      <point x="160" y="343.5" type="line"/>
+      <point x="414.5" y="331.5" type="line" smooth="yes"/>
+      <point x="434" y="330.5"/>
+      <point x="449.5" y="348"/>
+      <point x="449.5" y="362" type="curve" smooth="yes"/>
+      <point x="449.5" y="372"/>
+      <point x="441.5" y="376"/>
+      <point x="421.5" y="376" type="curve" smooth="yes"/>
+      <point x="337" y="376"/>
+      <point x="283" y="374"/>
+      <point x="160" y="366.5" type="curve"/>
+      <point x="160" y="680" type="line"/>
+      <point x="263" y="680" type="line" smooth="yes"/>
+      <point x="354" y="680"/>
+      <point x="401.5" y="652"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:58:39 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>H</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

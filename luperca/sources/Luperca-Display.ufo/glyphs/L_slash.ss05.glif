@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Lslash.ss05" format="2">
+  <advance width="442"/>
+  <anchor x="161" y="0" name="bottom"/>
+  <anchor x="161" y="350" name="center"/>
+  <anchor x="136" y="700" name="top"/>
+  <anchor x="302" y="700" name="topright"/>
+  <outline>
+    <contour>
+      <point x="589.5" y="-185.5" type="curve" smooth="yes"/>
+      <point x="672" y="-185.5"/>
+      <point x="748" y="-153.5"/>
+      <point x="822" y="-112" type="curve"/>
+      <point x="818.5" y="-104.5" type="line"/>
+      <point x="755.5" y="-137.5"/>
+      <point x="683" y="-156.5"/>
+      <point x="616" y="-156.5" type="curve" smooth="yes"/>
+      <point x="430" y="-156.5"/>
+      <point x="387.5" y="15"/>
+      <point x="160" y="20" type="curve"/>
+      <point x="160" y="308.5" type="line"/>
+      <point x="426" y="441.5" type="line"/>
+      <point x="426" y="454.5" type="line"/>
+      <point x="160" y="321.5" type="line"/>
+      <point x="160" y="700" type="line"/>
+      <point x="110" y="700" type="line"/>
+      <point x="110" y="296.5" type="line"/>
+      <point x="26" y="254.5" type="line"/>
+      <point x="26" y="241.5" type="line"/>
+      <point x="110" y="283.5" type="line"/>
+      <point x="110" y="0" type="line"/>
+      <point x="139.5" y="0" type="line"/>
+      <point x="150" y="0" type="line" smooth="yes"/>
+      <point x="316.5" y="0"/>
+      <point x="405.5" y="-185.5"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

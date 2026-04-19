@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="W" format="2">
+  <advance width="893"/>
+  <unicode hex="0057"/>
+  <unicode hex="0077"/>
+  <guideline x="409" y="79.5" angle="0"/>
+  <guideline x="433.5" y="-30" angle="0"/>
+  <guideline x="333.5" y="730" angle="0"/>
+  <anchor x="450.5" y="0" name="bottom"/>
+  <anchor x="459.5" y="720" name="top"/>
+  <outline>
+    <contour>
+      <point x="63.5" y="654" type="curve"/>
+      <point x="259" y="-30" type="line"/>
+      <point x="267" y="-30" type="line"/>
+      <point x="455.5" y="590" type="line"/>
+      <point x="639.5" y="-30" type="line"/>
+      <point x="647.5" y="-30" type="line"/>
+      <point x="831" y="659" type="line" smooth="yes"/>
+      <point x="837.5" y="684"/>
+      <point x="852.5" y="690.5"/>
+      <point x="873" y="692" type="curve"/>
+      <point x="873" y="700" type="line"/>
+      <point x="792" y="700" type="line"/>
+      <point x="647.5" y="79.5" type="line"/>
+      <point x="463.5" y="720" type="line"/>
+      <point x="455.5" y="720" type="line"/>
+      <point x="265" y="79.5" type="line"/>
+      <point x="122" y="648" type="line" smooth="yes"/>
+      <point x="114.5" y="678"/>
+      <point x="122.5" y="690.5"/>
+      <point x="148" y="692" type="curve"/>
+      <point x="148" y="700" type="line"/>
+      <point x="20" y="700" type="line"/>
+      <point x="20" y="692" type="line"/>
+      <point x="42" y="690.5"/>
+      <point x="54" y="682"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>V</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>V</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

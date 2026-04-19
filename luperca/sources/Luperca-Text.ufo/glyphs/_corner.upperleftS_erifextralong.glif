@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_corner.upperleftSerifextralong" format="2">
+  <advance width="58"/>
+  <anchor x="58" y="700" name="origin"/>
+  <outline>
+    <contour>
+      <point x="68" y="700" type="move"/>
+      <point x="-20" y="700" type="line"/>
+      <point x="-20" y="672" type="line"/>
+      <point x="42.5" y="657.5"/>
+      <point x="58" y="649"/>
+      <point x="58" y="618" type="curve" smooth="yes"/>
+      <point x="58" y="567" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 11:13:53 +0000</string>
+    </dict>
+  </lib>
+</glyph>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_part.stembothmiddleupthree" format="2">
+  <advance width="280"/>
+  <outline>
+    <contour>
+      <point x="165" y="0" type="line"/>
+      <point x="165" y="567" type="line"/>
+      <point x="165" y="618" type="line"/>
+      <point x="165" y="649"/>
+      <point x="180.5" y="657.5"/>
+      <point x="243" y="672" type="curve"/>
+      <point x="243" y="700" type="line"/>
+      <point x="155" y="700" type="line"/>
+      <point x="125" y="700" type="line"/>
+      <point x="76" y="700" type="line"/>
+      <point x="76" y="672" type="line"/>
+      <point x="105.5" y="660"/>
+      <point x="115" y="649"/>
+      <point x="115" y="618" type="curve"/>
+      <point x="115" y="567" type="line"/>
+      <point x="115" y="133" type="line"/>
+      <point x="115" y="82" type="line"/>
+      <point x="115" y="51"/>
+      <point x="104.5" y="40"/>
+      <point x="75" y="28" type="curve"/>
+      <point x="75" y="0" type="line"/>
+      <point x="125" y="0" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+    </dict>
+  </lib>
+</glyph>

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="N_F.dlig" format="2">
+  <advance width="933.8"/>
+  <outline>
+    <contour>
+      <point x="145" y="635.5" type="curve"/>
+      <point x="571.5" y="-43" type="line"/>
+      <point x="573.5" y="-43" type="line"/>
+      <point x="573.5" y="346" type="line"/>
+      <point x="836.5" y="331.5" type="line" smooth="yes"/>
+      <point x="855" y="330.5"/>
+      <point x="871.5" y="349.5"/>
+      <point x="871.5" y="362" type="curve" smooth="yes"/>
+      <point x="871.5" y="371"/>
+      <point x="863.5" y="374"/>
+      <point x="843.5" y="374" type="curve" smooth="yes"/>
+      <point x="809.5" y="374"/>
+      <point x="767" y="370.5"/>
+      <point x="573.5" y="362" type="curve"/>
+      <point x="573.5" y="686" type="line"/>
+      <point x="687.5" y="686" type="line" smooth="yes"/>
+      <point x="774.5" y="686"/>
+      <point x="822.5" y="657"/>
+      <point x="929" y="543.5" type="curve"/>
+      <point x="931" y="544.5" type="line"/>
+      <point x="903" y="585.5"/>
+      <point x="849.5" y="654"/>
+      <point x="809" y="700" type="curve"/>
+      <point x="540" y="700" type="line"/>
+      <point x="491" y="700" type="line"/>
+      <point x="491" y="698" type="line"/>
+      <point x="520.5" y="699"/>
+      <point x="530" y="688"/>
+      <point x="530" y="657" type="curve"/>
+      <point x="530" y="593" type="line"/>
+      <point x="530" y="109" type="line"/>
+      <point x="159.5" y="700" type="line"/>
+      <point x="62" y="700" type="line"/>
+      <point x="62" y="698" type="line"/>
+      <point x="77" y="697"/>
+      <point x="91" y="693.5"/>
+      <point x="103.5" y="686.5" type="curve"/>
+      <point x="103.5" y="107" type="line"/>
+      <point x="103.5" y="43" type="line"/>
+      <point x="103.5" y="11.5"/>
+      <point x="93" y="0.5"/>
+      <point x="67.5" y="2" type="curve"/>
+      <point x="67.5" y="0" type="line"/>
+      <point x="113.5" y="0" type="line"/>
+      <point x="127" y="0" type="line"/>
+      <point x="177" y="0" type="line"/>
+      <point x="177" y="2" type="line"/>
+      <point x="147.5" y="1"/>
+      <point x="137" y="12"/>
+      <point x="137" y="43" type="curve"/>
+      <point x="137" y="107" type="line"/>
+      <point x="137" y="647.5" type="line"/>
+      <point x="139.5" y="643.5"/>
+      <point x="142.5" y="639.5"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 17:31:32 +0000</string>
+      <key>com.schriftgestaltung.Glyphs.leftMetricsKey</key>
+      <string>N</string>
+      <key>com.schriftgestaltung.Glyphs.rightMetricsKey</key>
+      <string>F</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

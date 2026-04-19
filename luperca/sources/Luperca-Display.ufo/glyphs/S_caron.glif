@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Scaron" format="2">
+  <advance width="483"/>
+  <unicode hex="0160"/>
+  <unicode hex="0161"/>
+  <anchor x="235" y="-20" name="bottom"/>
+  <anchor x="250.5" y="896.5" name="top"/>
+  <outline>
+    <component base="S"/>
+    <component base="uni030C" xOffset="121.5" yOffset="15.5"/>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 14:48:06 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

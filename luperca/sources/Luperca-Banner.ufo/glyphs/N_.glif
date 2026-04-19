@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="N" format="2">
+  <advance width="654"/>
+  <unicode hex="004E"/>
+  <unicode hex="006E"/>
+  <anchor x="332" y="0" name="bottom"/>
+  <anchor x="332" y="700" name="top"/>
+  <outline>
+    <contour>
+      <point x="163" y="604.5" type="curve"/>
+      <point x="558.5" y="-39" type="line"/>
+      <point x="560.5" y="-39" type="line"/>
+      <point x="561" y="593" type="line"/>
+      <point x="561" y="657" type="line"/>
+      <point x="561" y="688.5"/>
+      <point x="571.5" y="699.5"/>
+      <point x="597" y="698" type="curve"/>
+      <point x="597" y="700" type="line"/>
+      <point x="551" y="700" type="line"/>
+      <point x="537.5" y="700" type="line"/>
+      <point x="488.5" y="700" type="line"/>
+      <point x="488.5" y="698" type="line"/>
+      <point x="518" y="699"/>
+      <point x="527.5" y="688"/>
+      <point x="527.5" y="657" type="curve"/>
+      <point x="527.5" y="593" type="line"/>
+      <point x="527.5" y="103" type="line"/>
+      <point x="159.5" y="700" type="line"/>
+      <point x="62" y="700" type="line"/>
+      <point x="62" y="698" type="line"/>
+      <point x="77" y="697"/>
+      <point x="91" y="693.5"/>
+      <point x="103.5" y="686.5" type="curve"/>
+      <point x="103.5" y="107" type="line"/>
+      <point x="103.5" y="43" type="line"/>
+      <point x="103.5" y="11.5"/>
+      <point x="93" y="0.5"/>
+      <point x="67.5" y="2" type="curve"/>
+      <point x="67.5" y="0" type="line"/>
+      <point x="113.5" y="0" type="line"/>
+      <point x="127" y="0" type="line"/>
+      <point x="177" y="0" type="line"/>
+      <point x="177" y="2" type="line"/>
+      <point x="147.5" y="1"/>
+      <point x="137" y="12"/>
+      <point x="137" y="43" type="curve"/>
+      <point x="137" y="107" type="line"/>
+      <point x="137" y="647" type="line"/>
+      <point x="145.5" y="633"/>
+      <point x="154.5" y="618.5"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 16:00:32 +0000</string>
+      <key>public.markColor</key>
+      <string>0.67,0.95,0.38,1</string>
+    </dict>
+  </lib>
+</glyph>

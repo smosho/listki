@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_part.stemleft" format="2">
+  <advance width="220"/>
+  <outline>
+    <contour>
+      <point x="130" y="0" type="line"/>
+      <point x="130" y="700" type="line"/>
+      <point x="90" y="700" type="line"/>
+      <point x="41" y="700" type="line"/>
+      <point x="41" y="692" type="line"/>
+      <point x="70.5" y="690"/>
+      <point x="80" y="679"/>
+      <point x="80" y="648" type="curve"/>
+      <point x="80" y="587" type="line"/>
+      <point x="80" y="113" type="line"/>
+      <point x="80" y="52" type="line"/>
+      <point x="80" y="21"/>
+      <point x="69.5" y="10"/>
+      <point x="40" y="8" type="curve"/>
+      <point x="40" y="0" type="line"/>
+      <point x="90" y="0" type="line"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.lastChange</key>
+      <string>2025-12-17 15:57:36 +0000</string>
+    </dict>
+  </lib>
+</glyph>
