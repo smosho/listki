@@ -21,8 +21,8 @@
 
     .step p {
       margin: 0;
-      font-size: 0.92rem;
-      line-height: 1.6;
+      font-size: 0.75rem;
+      line-height: 1.35;
     }
   </style>
 </head>
@@ -74,7 +74,7 @@
 
       // Anchor points spread diagonally — horizontal tangents at each point
       // so the curve "rests" at each text position before curving down
-      const margin  = 30;
+      const margin  = 0;
       const tension = Math.min(70, W / (n * 1.8));
 
       const pts = steps.map((_, i) => ({
