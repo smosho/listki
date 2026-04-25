@@ -326,6 +326,7 @@
         lastBounce: 0,
         hovered: false,
         currentScale: 1.0,
+        naturalSpeed: speed,
       };
 
       img.addEventListener("load", () => {
@@ -469,6 +470,14 @@
         if (bounced && now - item.lastBounce > 120) {
           playBounce();
           item.lastBounce = now;
+        }
+
+        // Friction — bleed speed back toward each photo's natural baseline
+        const curSpeed = Math.hypot(item.vx, item.vy);
+        if (curSpeed > item.naturalSpeed) {
+          const decayed = Math.max(item.naturalSpeed, curSpeed * 0.985);
+          item.vx = item.vx / curSpeed * decayed;
+          item.vy = item.vy / curSpeed * decayed;
         }
 
         // Lerp scale toward target — smooth hover without CSS transition interfering
