@@ -80,7 +80,7 @@
       cursor: pointer;
       will-change: transform;
       z-index: 1;
-      touch-action: manipulation;
+      touch-action: none;
     }
 
     .photo:hover {
@@ -333,32 +333,93 @@
         if (s) obj.color = s;
       });
 
-      el.addEventListener("mouseenter", () => { obj.hovered = true;  });
+      el.addEventListener("mouseenter", () => { if (obj.state === "bouncing") obj.hovered = true;  });
       el.addEventListener("mouseleave", () => { obj.hovered = false; });
 
-      el.addEventListener("click", async () => {
-        await initAudio(); // await resume so context is running before sounds fire
+      // ── Drag / flick / tap ──────────────────────────────────────────────
+      el.addEventListener("pointerdown", async e => {
+        await initAudio();
         if (obj.state !== "bouncing") return;
-        if (obj.returnTimer) clearTimeout(obj.returnTimer);
+        e.preventDefault();
+        el.setPointerCapture(e.pointerId);
+        obj.state      = "dragging";
+        obj.dragOffX   = e.clientX - obj.x;
+        obj.dragOffY   = e.clientY - obj.y;
+        obj.dragStartX = e.clientX;
+        obj.dragStartY = e.clientY;
+        obj.dragMoved  = false;
+        obj.velHistory = [{ x: obj.x, y: obj.y, t: performance.now() }];
+        obj.hovered    = false;
+      });
 
-        obj.frozenX = obj.x;
-        obj.frozenY = obj.y;
-        obj.state   = "zoomed";
-        obj.hovered = false;
-        obj.currentScale = 1.0;
-        zoomedItem  = obj;
+      el.addEventListener("pointermove", e => {
+        if (obj.state !== "dragging") return;
+        const nx = e.clientX - obj.dragOffX;
+        const ny = e.clientY - obj.dragOffY;
+        const dx = e.clientX - obj.dragStartX;
+        const dy = e.clientY - obj.dragStartY;
+        if (Math.sqrt(dx * dx + dy * dy) > 8) obj.dragMoved = true;
+        obj.x = nx;
+        obj.y = ny;
+        obj.velHistory.push({ x: nx, y: ny, t: performance.now() });
+        if (obj.velHistory.length > 8) obj.velHistory.shift();
+        const half = SIZE / 2;
+        el.style.transform = `translate(${nx + half}px, ${ny + half}px) scale(1) translate(${-half}px, ${-half}px)`;
+      });
 
-        const hoverSize = Math.min(vw(), vh()) * (MOBILE ? 0.88 : 0.72);
-        const cx = (vw() - hoverSize) / 2;
-        const cy = (vh() - hoverSize) / 2;
+      el.addEventListener("pointerup", () => {
+        if (obj.state !== "dragging") return;
 
-        overlay.classList.add("dimmed");
-        el.classList.add("zooming");
-        el.style.width     = hoverSize + "px";
-        el.style.height    = hoverSize + "px";
-        el.style.transform = `translate(${cx}px, ${cy}px)`;
+        if (!obj.dragMoved) {
+          // Tap with no movement → zoom
+          obj.state = "bouncing";
+          if (obj.returnTimer) clearTimeout(obj.returnTimer);
+          obj.frozenX      = obj.x;
+          obj.frozenY      = obj.y;
+          obj.state        = "zoomed";
+          obj.currentScale = 1.0;
+          zoomedItem       = obj;
 
+          const hoverSize = Math.min(vw(), vh()) * (MOBILE ? 0.88 : 0.72);
+          const cx = (vw() - hoverSize) / 2;
+          const cy = (vh() - hoverSize) / 2;
+
+          overlay.classList.add("dimmed");
+          el.classList.add("zooming");
+          el.style.width     = hoverSize + "px";
+          el.style.height    = hoverSize + "px";
+          el.style.transform = `translate(${cx}px, ${cy}px)`;
+          playZoom(obj.noteIdx);
+          return;
+        }
+
+        // Flick: derive velocity from the last 100 ms of movement
+        const now    = performance.now();
+        const recent = obj.velHistory.filter(v => now - v.t < 100);
+        if (recent.length >= 2) {
+          const first = recent[0];
+          const last  = recent[recent.length - 1];
+          const dt    = (last.t - first.t) / (1000 / 60); // ms → frames
+          if (dt > 0) {
+            const rawVx = (last.x - first.x) / dt;
+            const rawVy = (last.y - first.y) / dt;
+            const speed = Math.hypot(rawVx, rawVy);
+            const cap   = MOBILE ? 18 : 22;
+            if (speed > cap) {
+              obj.vx = rawVx / speed * cap;
+              obj.vy = rawVy / speed * cap;
+            } else if (speed > 0.3) {
+              obj.vx = rawVx;
+              obj.vy = rawVy;
+            }
+          }
+        }
+        obj.state = "bouncing";
         playZoom(obj.noteIdx);
+      });
+
+      el.addEventListener("pointercancel", () => {
+        if (obj.state === "dragging") obj.state = "bouncing";
       });
 
       return obj;
