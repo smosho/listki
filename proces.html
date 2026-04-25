@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>listki — proces</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    body { background: #f0ece6; }
+
+    .proc-scroll {
+      height: 700vh;
+      position: relative;
+    }
+
+    .proc-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      overflow: visible;
+    }
+
+    .proc-label {
+      position: relative;
+      z-index: 1;
+      font-family: 'Luperca', Georgia, serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #141414;
+      opacity: 0.55;
+      transition: opacity 0.3s ease;
+      min-height: 1em;
+      user-select: none;
+    }
+
+    /* ── Heat glow: full-sticky-area radial gradient behind everything ── */
+    #heat-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 72% 82% at center,
+        rgba(199,69,45,0.24) 0%,
+        rgba(199,69,45,0.10) 42%,
+        rgba(199,69,45,0.02) 68%,
+        transparent 82%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Leaf stack ──────────────────────────────────────────────── */
+    .leaf-stack {
+      display: grid;
+      height: 62vh;
+      position: relative;
+      z-index: 1;    /* sits above heat-bg */
+      overflow: visible;
+    }
+
+    .leaf-layer {
+      grid-area: 1 / 1;
+      height: 100%;
+      width: auto;
+      max-width: 30vw;
+      opacity: 0;
+      align-self: start;
+      justify-self: center;
+    }
+
+    /* l-1 uses the suh SVG darkened to match the wet-slip grey (#b3b3b2) */
+    #l-1 { filter: brightness(0.82); }
+
+    /* ── Necklace ────────────────────────────────────────────────── */
+    .necklace-wrap {
+      grid-area: 1 / 1;
+      align-self: start;
+      justify-self: center;
+      margin-top: 12px;   /* a sliver of leaf tip visible above the chain */
+      pointer-events: none;
+      opacity: 0;
+      overflow: visible;
+    }
+
+    .necklace-wrap svg {
+      display: block;
+      overflow: visible;
+    }
+
+    @media (max-width: 600px) {
+      .leaf-stack { height: 56vh; }
+      .leaf-layer { max-width: 68vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav">
+    <a href="index.html">listki</a>
+    <a href="store.html">trgovina</a>
+    <a href="proces.html" class="active">proces</a>
+  </nav>
+
+  <div class="proc-scroll">
+    <div class="proc-sticky">
+
+      <!-- Ambient heat glow — driven by JS opacity -->
+      <div id="heat-bg"></div>
+
+      <div class="leaf-stack">
+
+        <!--
+          Necklace — placed FIRST so it paints behind all leaf layers.
+          Single smooth U path: nearly vertical at the shoulders, curving
+          to horizontal at the pendant attachment point (0,0 = leaf tip area).
+          C1-continuous at the bottom: both control points share y=0,
+          so the join is smooth with no kink.
+        -->
+        <div class="necklace-wrap" id="necklace-wrap">
+          <svg width="120" viewBox="-60 0 120 4" style="overflow:visible;">
+            <path d="M -180 -130  C -178 -68, -45 0, 0 0  C 45 0, 178 -68, 180 -130"
+                  fill="none" stroke="#c0bab2" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <!-- Stage 0: original leaf with veins -->
+        <img class="leaf-layer" id="l-0" src="SVG/listek proces.svg" alt="">
+        <!-- Stage 1: wet porcelain slip — same shape as suh, darkened to slip grey -->
+        <img class="leaf-layer" id="l-1" src="../SVG/listek suh.svg" alt="">
+        <!-- Stage 2: dried -->
+        <img class="leaf-layer" id="l-2" src="../SVG/listek suh.svg" alt="">
+        <!-- Stage 3: firing — red hot -->
+        <img class="leaf-layer" id="l-3" src="../SVG/listek žganje.svg" alt="">
+        <!-- Stage 4: finished, fired white -->
+        <img class="leaf-layer" id="l-4" src="../SVG/listek končan.svg" alt="">
+
+      </div>
+
+      <!-- Label sits below the leaf so chain overflow doesn't cross it -->
+      <div class="proc-label" data-stage="0">listki</div>
+
+    </div>
+  </div>
+
+  <script>
+    const procScroll   = document.querySelector('.proc-scroll');
+    const label        = document.querySelector('.proc-label');
+    const necklaceWrap = document.getElementById('necklace-wrap');
+    const heatBg       = document.getElementById('heat-bg');
+    const layers       = [0,1,2,3,4].map(i => document.getElementById(`l-${i}`));
+
+    // ── Utilities ────────────────────────────────────────────────────
+    const cl       = (v, a=0, b=1) => Math.max(a, Math.min(b, v));
+    const tp       = (p, s, e) => cl((p - s) / (e - s));
+    const easeOut3 = t => 1 - Math.pow(1 - t, 3);
+
+    // ── Layer windows [fadeIn-start, peak, fadeOut-end] ──────────────
+    // fi(n) == pk(n-1) → perfect cross-dissolve (opacities always sum to 1)
+    const W = [
+      [0.00, 0.10, 0.25],   // l-0  listek proces  (original grey vein leaf)
+      [0.10, 0.25, 0.42],   // l-1  namakanje      (suh shape, slip-grey tint)
+      [0.25, 0.42, 0.58],   // l-2  sušenje        (natural suh grey)
+      [0.42, 0.58, 0.73],   // l-3  žganje         (red hot)
+      [0.58, 0.73, 1.00],   // l-4  končan         (fired white, stays)
+    ];
+
+    function layerOpacity(i, p) {
+      const [fi, pk, fo] = W[i];
+      if (p <= fi) return 0;
+      if (p <  pk) return (p - fi) / (pk - fi);
+      if (i === 4) return 1;
+      if (p <  fo) return 1 - (p - pk) / (fo - pk);
+      return 0;
+    }
+
+    // ── Stage labels ─────────────────────────────────────────────────
+    // Each threshold is the moment the incoming layer starts,
+    // so the label changes exactly when the visual colour shifts.
+    const LABELS = ['listek','namakanje','sušenje','žganje','hlajenje','ogrlica'];
+
+    function stageOf(p) {
+      if (p < 0.10) return 0;   // listki
+      if (p < 0.25) return 1;   // namakanje
+      if (p < 0.42) return 2;   // sušenje
+      if (p < 0.655) return 3;  // žganje  ← starts exactly when red appears
+      if (p < 0.85) return 4;   // ohladitev
+      return 5;                 // ogrlica
+    }
+
+    // ── Main update ──────────────────────────────────────────────────
+    function updateLeaf(p) {
+
+      // Layer cross-dissolves + per-layer effects
+      layers.forEach((el, i) => {
+        el.style.opacity = layerOpacity(i, p);
+
+        // Large diffuse glow on the žganje layer
+        if (i === 3) {
+          const op = layerOpacity(3, p);
+          const g  = op * 32;
+          el.style.filter = g > 0.5
+            ? `drop-shadow(0 0 ${g.toFixed(0)}px rgba(199,69,45,0.55))`
+            : '';
+        }
+      });
+
+      // Ambient heat background (peaks when žganje is fully visible)
+      heatBg.style.opacity = layerOpacity(3, p);
+
+      // Necklace drop-in with cubic ease-out
+      const t5  = tp(p, 0.85, 1.0);
+      const e5  = easeOut3(t5);
+      necklaceWrap.style.opacity   = t5;
+      necklaceWrap.style.transform = `translateY(${((1 - e5) * -55).toFixed(1)}px)`;
+
+      // Label crossfade
+      const idx = stageOf(p);
+      if (label.dataset.stage !== String(idx)) {
+        label.dataset.stage = String(idx);
+        label.style.opacity = 0;
+        setTimeout(() => {
+          label.textContent = LABELS[idx];
+          label.style.opacity = 0.55;
+        }, 150);
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      const max = procScroll.offsetHeight - window.innerHeight;
+      updateLeaf(cl(window.scrollY / max));
+    }, { passive: true });
+
+    updateLeaf(0);
+  </script>
+
+</body>
+</html>

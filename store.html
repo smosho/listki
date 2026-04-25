@@ -33,25 +33,51 @@
     .filter-btn:hover { opacity: 0.7; }
     .filter-btn.active { opacity: 1; }
 
+    .store-page {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    .store-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 0fr;
+      gap: 0;
+      align-items: start;
+      margin-bottom: 2rem;
+      transition: grid-template-columns 0.34s ease, gap 0.34s ease;
+    }
+
+    .store-shell.has-selection {
+      grid-template-columns: minmax(0, 1fr) clamp(300px, 28vw, 390px);
+      gap: 2rem;
+    }
+
+    .store-main {
+      min-width: 0;
+    }
+
     /* ── Grid ── */
     .pieces-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    @media (max-width: 800px) {
-      .pieces-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 500px) {
-      .pieces-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.4rem;
     }
 
     /* ── Piece card ── */
     .piece {
       position: relative;
       cursor: pointer;
-      transition: transform 0.4s ease, opacity 0.4s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    }
+    .piece:hover {
+      transform: translateY(-4px);
+    }
+    .piece.selected {
+      box-shadow: 0 0 0 1px rgba(107, 97, 88, 0.28);
+    }
+    .piece.selected:hover {
+      transform: none;
     }
     .piece img {
       width: 100%;
@@ -59,6 +85,7 @@
       object-fit: cover;
       display: block;
       margin-bottom: 0.85rem;
+      background: rgba(107, 97, 88, 0.06);
     }
     .piece-name {
       font-size: 0.88rem;
@@ -82,59 +109,9 @@
       opacity: 0.4;
       margin-left: 0.6rem;
     }
-
-    /* ── Expand states ── */
-    .piece.expanded {
-      position: fixed !important;
-      z-index: 200;
-      cursor: default;
-      background: #f5f2ee;
-      border: 1px solid rgba(107, 97, 88, 0.45);
-      transition: left 0.45s ease, top 0.45s ease, width 0.45s ease;
-      margin: 0 !important;
-    }
-
-    /* Shrink non-expanded pieces */
-    .pieces-grid.has-expanded .piece:not(.expanded) {
-      transform: scale(0.72);
-      cursor: pointer;
-    }
-    .pieces-grid.has-expanded .piece:not(.expanded) .piece-name,
-    .pieces-grid.has-expanded .piece:not(.expanded) .piece-meta,
-    .pieces-grid.has-expanded .piece:not(.expanded) .piece-price {
-      opacity: 0;
-    }
-
-    /* Close button */
-    .piece-close {
-      position: absolute;
-      top: 8px; right: 10px;
-      background: none;
-      border: none;
-      font-size: 1rem;
-      line-height: 1;
-      cursor: pointer;
-      color: inherit;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-      padding: 2px;
-      z-index: 1;
-    }
-    .piece.expanded .piece-close {
-      opacity: 0.5;
-      pointer-events: all;
-    }
-    .piece-close:hover { opacity: 1 !important; }
-
+    .piece-close,
     .piece-extra {
-      display: none;
-      margin-top: 0.9rem;
-      padding-top: 0.9rem;
-      border-top: 1px solid rgba(107,97,88,0.15);
-    }
-    .piece.expanded .piece-extra {
-      display: block;
+      display: none !important;
     }
     .piece-description {
       font-size: 0.78rem;
@@ -148,7 +125,103 @@
       opacity: 0.45;
       margin-bottom: 1rem;
     }
-    .piece-buy {
+
+    /* ── Side panel ── */
+    .piece-panel {
+      position: sticky;
+      top: 2rem;
+      min-width: 0;
+      min-height: 0;
+      padding-left: 0;
+      border-left: 1px solid transparent;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      transition: opacity 0.25s ease, padding-left 0.34s ease, border-color 0.34s ease;
+    }
+    .piece-panel-card {
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .store-shell.has-selection .piece-panel {
+      min-height: 26rem;
+      padding-left: 1.8rem;
+      border-left-color: rgba(107, 97, 88, 0.16);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .piece-panel-card {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(1.4rem);
+      pointer-events: none;
+    }
+    .piece-panel.is-open .piece-panel-card {
+      max-height: 120rem;
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    .panel-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      margin-left: auto;
+      margin-bottom: 0.9rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+    .panel-close:hover { opacity: 1; }
+    .piece-panel:not(.is-open) .panel-close {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .piece-panel-image {
+      width: 100%;
+      aspect-ratio: 0.92;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 1rem;
+      background: rgba(107, 97, 88, 0.06);
+    }
+    .piece-panel-name {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .piece-panel-meta {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      opacity: 0.45;
+      margin-bottom: 0.5rem;
+    }
+    .piece-panel-price {
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 1.15rem;
+    }
+    .piece-panel-price .piece-status {
+      margin-left: 0.75rem;
+    }
+    .piece-panel-description {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      margin-bottom: 0.65rem;
+      opacity: 0.82;
+    }
+    .piece-panel-dimensions {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      opacity: 0.45;
+      margin-bottom: 1.1rem;
+    }
+    .panel-buy {
       display: inline-block;
       padding: 0.4rem 0;
       font-family: 'Luperca', Georgia, serif;
@@ -163,17 +236,10 @@
       opacity: 0.75;
       transition: opacity 0.2s;
     }
-    .piece-buy:hover { opacity: 1; }
+    .panel-buy:hover { opacity: 1; }
 
-    /* ── Overlay (invisible click trap) ── */
-    #store-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 5;
-    }
-    #store-overlay.active {
-      pointer-events: all;
+    .piece-panel-overlay {
+      display: none;
     }
 
     /* ── Custom order ── */
@@ -188,196 +254,304 @@
       opacity: 0.6;
       margin-top: 1.5rem;
     }
+
+    @media (max-width: 1200px) {
+      .pieces-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .pieces-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .store-page {
+        padding: 0 1.2rem 4rem;
+      }
+      .store-shell {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .pieces-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .piece-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(90vw, 420px);
+        min-height: 100vh;
+        padding: 1.1rem 1.2rem 1.5rem;
+        border-left: 1px solid rgba(107, 97, 88, 0.16);
+        background: #f5f2ee;
+        transform: translateX(100%);
+        transition: transform 0.32s ease;
+        z-index: 320;
+        overflow-y: auto;
+        opacity: 1;
+        pointer-events: none;
+      }
+      .piece-panel.is-open {
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+      .piece-panel-card {
+        max-height: none;
+        opacity: 1;
+        transform: none;
+      }
+      .piece-panel-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        border: none;
+        background: rgba(42, 37, 32, 0.18);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+        z-index: 300;
+      }
+      body.panel-open .piece-panel-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .pieces-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .store-footer {
+      max-width: 52ch;
+      margin: 5rem auto 4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      line-height: 1.75;
+      color: rgba(20, 20, 20, 0.42);
+    }
+
+    .store-footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .store-footer a:hover {
+      color: rgba(20, 20, 20, 0.75);
+    }
   </style>
 </head>
 <body>
 
-  <div id="store-overlay"></div>
-
   <nav id="site-nav">
     <a href="index.html">listki</a>
     <a href="store.html" class="active">trgovina</a>
-    <a href="about.html">o listkih</a>
+    <a href="proces.html">proces</a>
   </nav>
 
-  <div style="padding: 0 2rem 6rem;">
+  <div class="store-page">
 
     <h1>Trgovina</h1>
 
-    <!-- ── Filtri ── -->
-    <div class="filters">
-      <div class="filter-group">
-        <button class="filter-btn active" data-filter="type" data-value="all">Vse</button>
-        <button class="filter-btn" data-filter="type" data-value="ogrlice">Ogrlice</button>
-        <button class="filter-btn" data-filter="type" data-value="uhani">Uhani</button>
-        <button class="filter-btn" data-filter="type" data-value="drugo">Drugo</button>
-      </div>
-      <div class="filter-group">
-        <button class="filter-btn active" data-filter="status" data-value="all">Vse</button>
-        <button class="filter-btn" data-filter="status" data-value="na voljo">Na voljo</button>
-        <button class="filter-btn" data-filter="status" data-value="prodano">Prodano</button>
-      </div>
-    </div>
+    <div class="store-shell">
+      <div class="store-main">
+        <!-- ── Filtri ── -->
+        <div class="filters">
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="type" data-value="all">Vse</button>
+            <button class="filter-btn" data-filter="type" data-value="ogrlice">Ogrlice</button>
+            <button class="filter-btn" data-filter="type" data-value="uhani">Uhani</button>
+            <button class="filter-btn" data-filter="type" data-value="drugo">Drugo</button>
+          </div>
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="status" data-value="all">Vse</button>
+            <button class="filter-btn" data-filter="status" data-value="na voljo">Na voljo</button>
+            <button class="filter-btn" data-filter="status" data-value="prodano">Prodano</button>
+          </div>
+        </div>
 
-    <!-- ── Kosi ── -->
-    <div class="pieces-grid" id="pieces-grid">
+        <!-- ── Kosi ── -->
+        <div class="pieces-grid" id="pieces-grid">
 
       <div class="piece" data-type="ogrlice" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-01.jpg" alt="Kos 01">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-01.jpg" alt="Ginko">
+        <div class="piece-name">Ginko</div>
+        <div class="piece-meta">porcelan, srebro · 5–7 cm</div>
+        <div class="piece-price">€42 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Vejičasti list ginkovca, odtisnjen v bel porcelan. Nosi v sebi čas pred dinozavri.</div>
+          <div class="piece-dimensions">obesek: 6 cm, 28 g · verižica: 45 cm, 18 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="ogrlice" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-02.jpg" alt="Kos 02">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-02.jpg" alt="Trta">
+        <div class="piece-name">Trta</div>
+        <div class="piece-meta">porcelan, srebro · 4–6 cm</div>
+        <div class="piece-price">€38 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Dlanast list vinske trte z vidnimi žilami. Vonj po jeseni in sončnih dneh.</div>
+          <div class="piece-dimensions">obesek: 5 cm, 22 g · verižica: 40 cm, 16 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="ogrlice" data-status="prodano">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-03.jpg" alt="Kos 03">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">prodano</span></div>
+        <img src="single-03.jpg" alt="Hrast">
+        <div class="piece-name">Hrast</div>
+        <div class="piece-meta">porcelan, jeklo · 6–9 cm</div>
+        <div class="piece-price">€45 <span class="piece-status">prodano</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Rezljani list hrasta z globokimi vdolbinami. Trden in tih, kot gozd sam.</div>
+          <div class="piece-dimensions">obesek: 7 cm, 34 g · verižica: 50 cm, 22 g</div>
         </div>
       </div>
 
       <div class="piece" data-type="ogrlice" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-04.jpg" alt="Kos 04">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-04.jpg" alt="Robida">
+        <div class="piece-name">Robida</div>
+        <div class="piece-meta">porcelan, srebro · 3–5 cm</div>
+        <div class="piece-price">€35 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Nazobčan list robide, nežen v porcelanu, pa čeprav trn bode.</div>
+          <div class="piece-dimensions">obesek: 4 cm, 18 g · verižica: 38 cm, 15 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-05.jpg" alt="Kos 05">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-05.jpg" alt="Gaber">
+        <div class="piece-name">Gaber</div>
+        <div class="piece-meta">porcelan, jeklo · 3–5 cm</div>
+        <div class="piece-price">€32 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Naguban list gabra z valovitim robom. Par uhanov, vsak malce drugačen.</div>
+          <div class="piece-dimensions">obesek: 4 cm, 10 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-06.jpg" alt="Kos 06">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-06.jpg" alt="Breza">
+        <div class="piece-name">Breza</div>
+        <div class="piece-meta">porcelan, srebro · 2–4 cm</div>
+        <div class="piece-price">€30 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Drobni listi breze, lahki kot listje na vetru. Srebrn kaveljček, bel odtis.</div>
+          <div class="piece-dimensions">obesek: 3 cm, 8 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-07.jpg" alt="Kos 07">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-07.jpg" alt="Lipa">
+        <div class="piece-name">Lipa</div>
+        <div class="piece-meta">porcelan, jeklo · 3–5 cm</div>
+        <div class="piece-price">€34 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Srčast list lipe, simbol miru in domačnosti. Mehka oblika, trden material.</div>
+          <div class="piece-dimensions">obesek: 4 cm, 11 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="uhani" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-08.jpg" alt="Kos 08">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-08.jpg" alt="Ginko">
+        <div class="piece-name">Ginko</div>
+        <div class="piece-meta">porcelan, srebro · 2–4 cm</div>
+        <div class="piece-price">€32 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Mali par ginko listov — simetrična oblika, ki jo je oblikovala narava sama.</div>
+          <div class="piece-dimensions">obesek: 3 cm, 9 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-09.jpg" alt="Kos 09">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-09.jpg" alt="Jelša">
+        <div class="piece-name">Jelša</div>
+        <div class="piece-meta">porcelan, jeklo · 4–7 cm</div>
+        <div class="piece-price">€40 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Zaobljen list jelše z ob vodi spajanim porcelanom. Spomin na rečne bregove.</div>
+          <div class="piece-dimensions">obesek: 5 cm, 24 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-10.jpg" alt="Kos 10">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-10.jpg" alt="Vrba">
+        <div class="piece-name">Vrba</div>
+        <div class="piece-meta">porcelan, srebro · 5–8 cm</div>
+        <div class="piece-price">€48 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Podolgovat list vrbe, nežno ukrivljen. Srebrna zaključitev, porcelan v belem.</div>
+          <div class="piece-dimensions">obesek: 6 cm, 30 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-11.jpg" alt="Kos 11">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-11.jpg" alt="Macesen">
+        <div class="piece-name">Macesen</div>
+        <div class="piece-meta">porcelan, jeklo · 3–6 cm</div>
+        <div class="piece-price">€36 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Iglica macesna — edine iglavčeve iglice, ki jeseni odpadejo. Redek odtis.</div>
+          <div class="piece-dimensions">obesek: 4 cm, 20 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
       <div class="piece" data-type="drugo" data-status="na voljo">
         <button class="piece-close" aria-label="Zapri">&#x2715;</button>
-        <img src="single-12.jpg" alt="Kos 12">
-        <div class="piece-name">Ime kosa</div>
-        <div class="piece-meta">Material · mere</div>
-        <div class="piece-price">€00 <span class="piece-status">na voljo</span></div>
+        <img src="single-12.jpg" alt="Topol">
+        <div class="piece-name">Topol</div>
+        <div class="piece-meta">porcelan, srebro · 4–7 cm</div>
+        <div class="piece-price">€44 <span class="piece-status">na voljo</span></div>
         <div class="piece-extra">
-          <div class="piece-description">Kratek opis kosa.</div>
-          <div class="piece-dimensions">Mere: —</div>
+          <div class="piece-description">Trikotast list topola z gladkim robom. Srebro se lepo ujema z belo glino.</div>
+          <div class="piece-dimensions">obesek: 5 cm, 26 g</div>
           <button class="piece-buy">Kupi</button>
         </div>
       </div>
 
+        </div>
+      </div>
+
+      <aside class="piece-panel" id="piece-panel" aria-live="polite" aria-hidden="true">
+        <div class="piece-panel-card">
+          <button class="panel-close" id="piece-panel-close" aria-label="Zapri">&#x2715;</button>
+          <img class="piece-panel-image" id="panel-image" alt="">
+          <div class="piece-panel-name" id="panel-name"></div>
+          <div class="piece-panel-meta" id="panel-meta"></div>
+          <div class="piece-panel-price" id="panel-price"></div>
+          <div class="piece-panel-description" id="panel-description"></div>
+          <div class="piece-panel-dimensions" id="panel-dimensions"></div>
+          <button class="panel-buy" id="panel-buy">Kupi</button>
+        </div>
+      </aside>
     </div>
+
+    <button class="piece-panel-overlay" id="piece-panel-overlay" aria-label="Zapri podrobnosti"></button>
 
     <hr>
 
@@ -385,9 +559,7 @@
     <h2>Naročila po meri</h2>
 
     <p class="custom-intro">
-      Vsak kos je narejen ročno in nobeden ni enak drugemu. Če imaš v mislih
-      kaj posebnega — obliko, velikost, občutek — napiši mi in skupaj bova
-      našla pravo rešitev.
+      Vsak kos je izdelan ročno in noben kos ni enak drugemu. Si želiš za vedno obdržati svoj najljubši listek? Pomagal ti bom!
     </p>
 
     <form id="order-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
@@ -407,12 +579,27 @@
       <p id="success-msg">Hvala — kmalu se javim.</p>
     </form>
 
+    <footer class="store-footer">
+      <p>Sem Sašo, biokemik in oblikovalec. Uživam ob spoznavanju materialov in rokodelskih tehnik. Opazujem in ustvarjam na preseku oblikovanja in narave. Listki so se zgodili spontano, in se počasi nadaljujejo :)</p>
+      <p><a href="mailto:sasojakob99@gmail.com">sasojakob99@gmail.com</a></p>
+    </footer>
+
   </div>
 
   <script>
-    const overlay  = document.getElementById('store-overlay');
-    const pieces   = Array.from(document.querySelectorAll('.piece'));
-    let expanded   = null;
+    const pieces = Array.from(document.querySelectorAll('.piece'));
+    const storeShell = document.querySelector('.store-shell');
+    const panel = document.getElementById('piece-panel');
+    const panelOverlay = document.getElementById('piece-panel-overlay');
+    const panelClose = document.getElementById('piece-panel-close');
+    const panelImage = document.getElementById('panel-image');
+    const panelName = document.getElementById('panel-name');
+    const panelMeta = document.getElementById('panel-meta');
+    const panelPrice = document.getElementById('panel-price');
+    const panelDescription = document.getElementById('panel-description');
+    const panelDimensions = document.getElementById('panel-dimensions');
+    const panelBuy = document.getElementById('panel-buy');
+    let selected = null;
     const activeFilters = { type: 'all', status: 'all' };
 
     // ── Filters ────────────────────────────────────────────────────────────
@@ -422,6 +609,7 @@
         const statusMatch = activeFilters.status === 'all' || p.dataset.status === activeFilters.status;
         p.style.display = (typeMatch && statusMatch) ? '' : 'none';
       });
+      if (selected && selected.style.display === 'none') closePanel();
     }
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -430,85 +618,62 @@
         document.querySelectorAll(`.filter-btn[data-filter="${group}"]`).forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeFilters[group] = btn.dataset.value;
-        if (expanded) collapse();
         applyFilters();
       });
     });
 
-    // ── Expand / collapse ──────────────────────────────────────────────────
-    const grid = document.getElementById('pieces-grid');
-
-    function expandPiece(el) {
-      const rect    = el.getBoundingClientRect();
-      const targetW = Math.min(window.innerWidth * 0.38, 420);
-      const targetX = (window.innerWidth  - targetW) / 2;
-      const targetY = Math.max(30, (window.innerHeight - targetW * 1.65) / 2);
-
-      // Place at current position instantly (no transition)
-      el.style.transition = 'none';
-      el.style.left   = rect.left + 'px';
-      el.style.top    = rect.top  + 'px';
-      el.style.width  = rect.width + 'px';
-      el.classList.add('expanded');
-
-      el.offsetHeight; // force reflow
-
-      // Animate to center
-      el.style.transition = '';
-      el.style.left  = targetX + 'px';
-      el.style.top   = targetY + 'px';
-      el.style.width = targetW + 'px';
-
-      grid.classList.add('has-expanded');
-      expanded = el;
+    // ── Panel open / close ─────────────────────────────────────────────────
+    function fillPanel(el) {
+      const img = el.querySelector('img');
+      panelImage.src = img.src;
+      panelImage.alt = img.alt;
+      panelName.textContent = el.querySelector('.piece-name').textContent;
+      panelMeta.textContent = el.querySelector('.piece-meta').textContent;
+      panelPrice.innerHTML = el.querySelector('.piece-price').innerHTML;
+      panelDescription.textContent = el.querySelector('.piece-description')?.textContent ?? '';
+      panelDimensions.textContent = el.querySelector('.piece-dimensions')?.textContent ?? '';
+      panelBuy.hidden = !el.querySelector('.piece-buy');
     }
 
-    function collapse(immediate) {
-      if (!expanded) return;
-      const el = expanded;
-      expanded  = null;
-      grid.classList.remove('has-expanded');
+    function openPanel(el) {
+      if (selected === el) return;
+      fillPanel(el);
+      selected = el;
+      pieces.forEach(piece => piece.classList.toggle('selected', piece === el));
+      storeShell.classList.add('has-selection');
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('panel-open');
+      panel.scrollTop = 0;
+    }
 
-      if (immediate) {
-        el.style.cssText = '';
-        el.classList.remove('expanded');
-      } else {
-        // Animate to fade out
-        el.style.opacity = '0';
-        setTimeout(() => {
-          el.style.cssText = '';
-          el.classList.remove('expanded');
-        }, 380);
-      }
+    function closePanel() {
+      if (!selected) return;
+      selected = null;
+      pieces.forEach(piece => piece.classList.remove('selected'));
+      panel.classList.remove('is-open');
+      storeShell.classList.remove('has-selection');
+      panel.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('panel-open');
     }
 
     pieces.forEach(el => {
-      el.addEventListener('click', e => {
-        if (expanded === el) return;
-        if (expanded) { collapse(true); expandPiece(el); return; }
-        expandPiece(el);
-      });
-
-      el.querySelector('.piece-close').addEventListener('click', e => {
-        e.stopPropagation();
-        collapse();
-      });
-
-      const buyBtn = el.querySelector('.piece-buy');
-      if (buyBtn) {
-        buyBtn.addEventListener('click', e => {
-          e.stopPropagation();
-          const name = el.querySelector('.piece-name').textContent;
-          collapse();
-          document.getElementById('message').value = `Zanima me kos: ${name}\n`;
-          setTimeout(() => {
-            document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
-          }, 400);
-        });
-      }
+      el.addEventListener('click', () => openPanel(el));
     });
 
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') collapse(); });
+    panelClose.addEventListener('click', closePanel);
+    panelOverlay.addEventListener('click', closePanel);
+    panelBuy.addEventListener('click', () => {
+      if (!selected) return;
+      const name = selected.querySelector('.piece-name').textContent;
+      closePanel();
+      document.getElementById('message').value = `Zanima me kos: ${name}\n`;
+      document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closePanel();
+    });
 
     // ── Form submit ────────────────────────────────────────────────────────
     const form = document.getElementById('order-form');
